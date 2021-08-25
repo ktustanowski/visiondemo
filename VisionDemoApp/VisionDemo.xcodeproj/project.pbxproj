@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BDB5EE026D6B75A0077AF18 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BDB5EDF26D6B75A0077AF18 /* Media.xcassets */; };
+		7BDB5EE226D6B7BB0077AF18 /* UIColor+Constructing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */; };
 		7BE6107C26D121AA00DDFAFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE6107B26D121AA00DDFAFD /* AppDelegate.swift */; };
 		7BE6107E26D121AA00DDFAFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE6107D26D121AA00DDFAFD /* SceneDelegate.swift */; };
 		7BE6108026D121AA00DDFAFD /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE6107F26D121AA00DDFAFD /* PickerViewController.swift */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7BDB5EDF26D6B75A0077AF18 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Constructing.swift"; sourceTree = "<group>"; };
 		7BE6107826D121AA00DDFAFD /* VisionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BE6107B26D121AA00DDFAFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BE6107D26D121AA00DDFAFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				7BE6108426D121AC00DDFAFD /* Assets.xcassets */,
 				7BE6108626D121AC00DDFAFD /* LaunchScreen.storyboard */,
 				7BE6108926D121AC00DDFAFD /* Info.plist */,
+				7BDB5EDF26D6B75A0077AF18 /* Media.xcassets */,
+				7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */,
 			);
 			path = VisionDemo;
 			sourceTree = "<group>";
@@ -233,6 +239,7 @@
 			files = (
 				7BE6108826D121AC00DDFAFD /* LaunchScreen.storyboard in Resources */,
 				7BE6108526D121AC00DDFAFD /* Assets.xcassets in Resources */,
+				7BDB5EE026D6B75A0077AF18 /* Media.xcassets in Resources */,
 				7BE6108326D121AA00DDFAFD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BDB5EE226D6B7BB0077AF18 /* UIColor+Constructing.swift in Sources */,
 				7BE6108026D121AA00DDFAFD /* PickerViewController.swift in Sources */,
 				7BE6107C26D121AA00DDFAFD /* AppDelegate.swift in Sources */,
 				7BE6107E26D121AA00DDFAFD /* SceneDelegate.swift in Sources */,

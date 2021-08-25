@@ -8,20 +8,28 @@
 import UIKit
 import Vision
 
-class PickerViewController: UIViewController {
+final class PickerViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBOutlet weak var saveImageButton: UIButton!
+        
+    @IBAction func didTapSaveImageButton(_ sender: Any) {
+        guard let image = imageView.image else { return }
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
     
     @IBAction func didTapLoadImageButton(_ sender: Any) {
+        saveImageButton.isHidden = true
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
         present(imagePicker, animated: true)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        saveImageButton.isHidden = true
+    }
 }
-
 
 extension PickerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -56,8 +64,9 @@ private extension PickerViewController {
         }
         
         imageView.image = image.draw(points: pointsToDraw.map { $0.location(in: image) },
-                                        fillColor: .white,
-                                        strokeColor: .black)
+                                     fillColor: .primary,
+                                     strokeColor: .white)
+        saveImageButton.isHidden = false
     }
 }
 

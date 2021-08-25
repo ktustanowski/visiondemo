@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,9 +21,19 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dao-wm-n2t">
                                 <rect key="frame" x="278" y="44" width="116" height="22"/>
+                                <color key="tintColor" name="Primary"/>
                                 <state key="normal" title="Load image" image="folder" catalog="system"/>
                                 <connections>
                                     <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="07J-W5-mTa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D29-uA-QqI">
+                                <rect key="frame" x="20" y="44" width="112.5" height="22"/>
+                                <color key="tintColor" name="Primary"/>
+                                <state key="normal" title="Save Image" image="arrow.down.square.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Th-sD-Wnj"/>
+                                    <action selector="didTapSaveImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NqC-aP-EQJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -32,13 +43,16 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="G3z-1V-rra" secondAttribute="bottom" id="3uh-ea-IZ4"/>
                             <constraint firstItem="G3z-1V-rra" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5Hd-KL-Die"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dao-wm-n2t" secondAttribute="trailing" constant="20" id="BzL-Cm-G0S"/>
+                            <constraint firstItem="D29-uA-QqI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VbO-Zg-frl"/>
                             <constraint firstItem="dao-wm-n2t" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lku-WF-Dud"/>
+                            <constraint firstItem="D29-uA-QqI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="n0J-xC-WZZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G3z-1V-rra" secondAttribute="trailing" id="vou-c8-zJG"/>
                             <constraint firstItem="G3z-1V-rra" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="wmo-Sd-bPE"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="G3z-1V-rra" id="zpE-rG-zqQ"/>
+                        <outlet property="saveImageButton" destination="D29-uA-QqI" id="bO5-Vx-pxW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -47,6 +61,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.down.square.fill" catalog="system" width="128" height="114"/>
         <image name="folder" catalog="system" width="128" height="97"/>
+        <namedColor name="Primary">
+            <color red="1" green="0.10196078431372549" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
