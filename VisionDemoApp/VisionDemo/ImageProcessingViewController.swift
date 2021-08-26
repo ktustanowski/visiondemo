@@ -8,7 +8,7 @@
 import UIKit
 import Vision
 
-final class PickerViewController: UIViewController {
+final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var saveImageButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
@@ -33,7 +33,7 @@ final class PickerViewController: UIViewController {
     }
 }
 
-extension PickerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension ImageProcessingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         imageView.image = info[.originalImage] as? UIImage
         picker.dismiss(animated: true, completion: nil)
@@ -43,7 +43,7 @@ extension PickerViewController: UIImagePickerControllerDelegate, UINavigationCon
     }
 }
 
-private extension PickerViewController {
+private extension ImageProcessingViewController {
     func process(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
         activityIndicator.startAnimating()
