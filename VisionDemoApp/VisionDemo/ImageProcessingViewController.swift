@@ -52,8 +52,9 @@ private extension ImageProcessingViewController {
         visionQueue.async { [weak self] in
             let detectBodyPose = VNDetectHumanBodyPoseRequest()
 
-            let visionRequest = VNImageRequestHandler(cgImage: cgImage, orientation: .init(image.imageOrientation), options: [:])
-            
+            let visionRequest = VNImageRequestHandler(cgImage: cgImage,
+                                                      orientation: .init(image.imageOrientation),
+                                                      options: [:])            
             do {
                 try visionRequest.perform([detectBodyPose])
             } catch {
