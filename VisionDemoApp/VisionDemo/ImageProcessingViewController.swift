@@ -14,12 +14,12 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     private let visionQueue = DispatchQueue.global(qos: .userInitiated)
 
-    @IBAction func didTapSaveImageButton(_ sender: Any) {
+    @IBAction func didTapSaveImageButton(_ sender: UIButton) {
         guard let image = imageView.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
     
-    @IBAction func didTapLoadImageButton(_ sender: Any) {
+    @IBAction func didTapLoadImageButton(_ sender: UIButton) {
         saveImageButton.isHidden = true
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .photoLibrary
@@ -34,7 +34,8 @@ final class ImageProcessingViewController: UIViewController {
 }
 
 extension ImageProcessingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         imageView.image = info[.originalImage] as? UIImage
         picker.dismiss(animated: true, completion: nil)
         
