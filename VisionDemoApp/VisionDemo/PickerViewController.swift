@@ -50,7 +50,7 @@ private extension PickerViewController {
         
         visionQueue.async { [weak self] in
             let detectBodyPose = VNDetectHumanBodyPoseRequest()
-            // TODOKT: Add also hand pose
+
             let visionRequest = VNImageRequestHandler(cgImage: cgImage, orientation: .init(image.imageOrientation), options: [:])
             
             do {
