@@ -50,19 +50,19 @@ private extension ImageProcessingViewController {
         activityIndicator.startAnimating()
         
         visionQueue.async { [weak self] in
-            let detectBodyPose = VNDetectHumanBodyPoseRequest()
-
-            let visionRequest = VNImageRequestHandler(cgImage: cgImage,
-                                                      orientation: .init(image.imageOrientation),
-                                                      options: [:])            
+            let bodyPoseRequest = VNDetectHumanBodyPoseRequest()
+            
+            let requestHandler = VNImageRequestHandler(cgImage: cgImage,
+                                                       orientation: .init(image.imageOrientation),
+                                                       options: [:])
             do {
-                try visionRequest.perform([detectBodyPose])
+                try requestHandler.perform([bodyPoseRequest])
             } catch {
                 self?.activityIndicator.stopAnimating()
                 print("Can't make the request due to \(error)")
             }
             
-            guard let results = detectBodyPose.results else { return }
+            guard let results = bodyPoseRequest.results else { return }
                     
             let pointsToDraw = results.flatMap { result in
                 result.availableJointNames
