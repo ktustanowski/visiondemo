@@ -28,14 +28,18 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D29-uA-QqI">
-                                <rect key="frame" x="20" y="44" width="112.5" height="22"/>
+                                <rect key="frame" x="20" y="44" width="117.5" height="22"/>
                                 <color key="tintColor" name="Primary"/>
-                                <state key="normal" title="Save Image" image="arrow.down.square.fill" catalog="system"/>
+                                <state key="normal" title="Save Image" image="folder.badge.plus" catalog="system"/>
                                 <connections>
                                     <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Th-sD-Wnj"/>
                                     <action selector="didTapSaveImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NqC-aP-EQJ"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="oZH-mS-jRl">
+                                <rect key="frame" x="197" y="439" width="20" height="20"/>
+                                <color key="color" name="Primary"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -44,6 +48,8 @@
                             <constraint firstItem="G3z-1V-rra" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5Hd-KL-Die"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dao-wm-n2t" secondAttribute="trailing" constant="20" id="BzL-Cm-G0S"/>
                             <constraint firstItem="D29-uA-QqI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VbO-Zg-frl"/>
+                            <constraint firstItem="oZH-mS-jRl" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Z36-Pc-wcG"/>
+                            <constraint firstItem="oZH-mS-jRl" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hqG-JZ-C0i"/>
                             <constraint firstItem="dao-wm-n2t" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lku-WF-Dud"/>
                             <constraint firstItem="D29-uA-QqI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="n0J-xC-WZZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G3z-1V-rra" secondAttribute="trailing" id="vou-c8-zJG"/>
@@ -51,6 +57,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="oZH-mS-jRl" id="zan-jP-c7c"/>
                         <outlet property="imageView" destination="G3z-1V-rra" id="zpE-rG-zqQ"/>
                         <outlet property="saveImageButton" destination="D29-uA-QqI" id="bO5-Vx-pxW"/>
                     </connections>
@@ -61,8 +68,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down.square.fill" catalog="system" width="128" height="114"/>
         <image name="folder" catalog="system" width="128" height="97"/>
+        <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
         <namedColor name="Primary">
             <color red="1" green="0.10196078431372549" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

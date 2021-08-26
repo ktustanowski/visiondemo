@@ -9,9 +9,11 @@ import UIKit
 import Vision
 
 final class PickerViewController: UIViewController {
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var saveImageButton: UIButton!
-        
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var saveImageButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    private let visionQueue = DispatchQueue.global(qos: .userInitiated)
+
     @IBAction func didTapSaveImageButton(_ sender: Any) {
         guard let image = imageView.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
@@ -44,29 +46,36 @@ extension PickerViewController: UIImagePickerControllerDelegate, UINavigationCon
 private extension PickerViewController {
     func process(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
-
-        let detectBodyPose = VNDetectHumanBodyPoseRequest()
-        // TODOKT: Add also hand pose
-        let visionRequest = VNImageRequestHandler(cgImage: cgImage, orientation: .init(image.imageOrientation), options: [:])
+        activityIndicator.startAnimating()
         
-        do {
-            try visionRequest.perform([detectBodyPose])
-        } catch {
-            print("Can't make the request due to \(error)")
+        visionQueue.async { [weak self] in
+            let detectBodyPose = VNDetectHumanBodyPoseRequest()
+            // TODOKT: Add also hand pose
+            let visionRequest = VNImageRequestHandler(cgImage: cgImage, orientation: .init(image.imageOrientation), options: [:])
+            
+            do {
+                try visionRequest.perform([detectBodyPose])
+            } catch {
+                self?.activityIndicator.stopAnimating()
+                print("Can't make the request due to \(error)")
+            }
+            
+            guard let results = detectBodyPose.results else { return }
+                    
+            let pointsToDraw = results.flatMap { result in
+                result.availableJointNames
+                    .compactMap { try? result.recognizedPoint($0) }
+                    .filter { $0.confidence > 0.1 }
+            }
+            
+            DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
+                self?.imageView.image = image.draw(points: pointsToDraw.map { $0.location(in: image) },
+                                                   fillColor: .primary,
+                                                   strokeColor: .white)
+                self?.saveImageButton.isHidden = false
+            }
         }
-        
-        guard let results = detectBodyPose.results else { return }
-                
-        let pointsToDraw = results.flatMap { result in
-            result.availableJointNames
-                .compactMap { try? result.recognizedPoint($0) }
-                .filter { $0.confidence > 0.1 }
-        }
-        
-        imageView.image = image.draw(points: pointsToDraw.map { $0.location(in: image) },
-                                     fillColor: .primary,
-                                     strokeColor: .white)
-        saveImageButton.isHidden = false
     }
 }
 
