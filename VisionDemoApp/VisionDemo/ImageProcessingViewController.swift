@@ -51,10 +51,11 @@ private extension ImageProcessingViewController {
         
         visionQueue.async { [weak self] in
             let bodyPoseRequest = VNDetectHumanBodyPoseRequest()
-            
+
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
-                                                       orientation: .init(image.imageOrientation),
-                                                       options: [:])
+                                                      orientation: .init(image.imageOrientation),
+                                                      options: [:])            
+
             do {
                 try requestHandler.perform([bodyPoseRequest])
             } catch {
@@ -64,15 +65,19 @@ private extension ImageProcessingViewController {
             
             guard let results = bodyPoseRequest.results else { return }
                     
-            let pointsToDraw = results.flatMap { result in
+            let normalizedPoints = results.flatMap { result in
                 result.availableJointNames
                     .compactMap { try? result.recognizedPoint($0) }
                     .filter { $0.confidence > 0.1 }
             }
             
+            let upsideDownPoints = normalizedPoints.map { $0.location(in: image) }
+            let points = upsideDownPoints
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            
             DispatchQueue.main.async {
                 self?.activityIndicator.stopAnimating()
-                self?.imageView.image = image.draw(points: pointsToDraw.map { $0.location(in: image) },
+                self?.imageView.image = image.draw(points:  points,
                                                    fillColor: .primary,
                                                    strokeColor: .white)
                 self?.saveImageButton.isHidden = false
@@ -91,7 +96,7 @@ extension UIImage {
         draw(at: CGPoint.zero)
 
         points.forEach { point in
-            let path = UIBezierPath(arcCenter: point.reversedY(using: size.height),
+            let path = UIBezierPath(arcCenter: point,
                                     radius: radius,
                                     startAngle: CGFloat(0),
                                     endAngle: CGFloat(Double.pi * 2),
@@ -129,8 +134,11 @@ extension CGImagePropertyOrientation {
 }
 
 extension CGPoint {
-    func reversedY(using height: CGFloat) -> CGPoint {
-        CGPoint(x: x, y: height - y)
+    func translateFromCoreImageToUIKitCoordinateSpace(using height: CGFloat) -> CGPoint {
+        let transform = CGAffineTransform(scaleX: 1, y: -1)
+            .translatedBy(x: 0, y: -height);
+        
+        return self.applying(transform)
     }
 }
 
