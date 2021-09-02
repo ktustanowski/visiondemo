@@ -19,20 +19,14 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3z-1V-rra">
                                 <rect key="frame" x="0.0" y="40" width="414" height="818"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dao-wm-n2t">
-                                <rect key="frame" x="278" y="44" width="116" height="22"/>
-                                <color key="tintColor" name="Primary"/>
-                                <state key="normal" title="Load image" image="folder" catalog="system"/>
-                                <connections>
-                                    <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="07J-W5-mTa"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D29-uA-QqI">
-                                <rect key="frame" x="20" y="44" width="117.5" height="22"/>
+                                <rect key="frame" x="20" y="44" width="68.5" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="GCR-Ic-owK"/>
+                                </constraints>
                                 <color key="tintColor" name="Primary"/>
-                                <state key="normal" title="Save Image" image="folder.badge.plus" catalog="system"/>
+                                <state key="normal" title=" Save" image="folder.badge.plus" catalog="system"/>
                                 <connections>
-                                    <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Th-sD-Wnj"/>
                                     <action selector="didTapSaveImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NqC-aP-EQJ"/>
                                 </connections>
                             </button>
@@ -40,18 +34,47 @@
                                 <rect key="frame" x="197" y="439" width="20" height="20"/>
                                 <color key="color" name="Primary"/>
                             </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Z5-a7-QTa">
+                                <rect key="frame" x="306" y="44" width="88" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="upq-Rw-xqX">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="4hL-SN-Zvb"/>
+                                            <constraint firstAttribute="height" constant="44" id="cWR-o4-e7f"/>
+                                        </constraints>
+                                        <color key="tintColor" name="Primary"/>
+                                        <state key="normal" image="camera.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="didTapTakePictureButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k6g-kN-1mT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dao-wm-n2t">
+                                        <rect key="frame" x="44" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="8Ny-18-smv"/>
+                                            <constraint firstAttribute="height" constant="44" id="o13-U5-MCx"/>
+                                        </constraints>
+                                        <color key="tintColor" name="Primary"/>
+                                        <state key="normal" image="photo" catalog="system"/>
+                                        <connections>
+                                            <action selector="didTapLoadImageButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="07J-W5-mTa"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="G3z-1V-rra" secondAttribute="bottom" id="3uh-ea-IZ4"/>
                             <constraint firstItem="G3z-1V-rra" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5Hd-KL-Die"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dao-wm-n2t" secondAttribute="trailing" constant="20" id="BzL-Cm-G0S"/>
                             <constraint firstItem="D29-uA-QqI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VbO-Zg-frl"/>
                             <constraint firstItem="oZH-mS-jRl" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Z36-Pc-wcG"/>
                             <constraint firstItem="oZH-mS-jRl" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hqG-JZ-C0i"/>
-                            <constraint firstItem="dao-wm-n2t" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lku-WF-Dud"/>
                             <constraint firstItem="D29-uA-QqI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="n0J-xC-WZZ"/>
+                            <constraint firstItem="1Z5-a7-QTa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="o4F-mK-nFx"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1Z5-a7-QTa" secondAttribute="trailing" constant="20" id="pqZ-U4-pzh"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G3z-1V-rra" secondAttribute="trailing" id="vou-c8-zJG"/>
                             <constraint firstItem="G3z-1V-rra" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="wmo-Sd-bPE"/>
                         </constraints>
@@ -68,8 +91,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="folder" catalog="system" width="128" height="97"/>
+        <image name="camera.fill" catalog="system" width="128" height="94"/>
         <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
+        <image name="photo" catalog="system" width="128" height="93"/>
         <namedColor name="Primary">
             <color red="1" green="0.10196078431372549" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

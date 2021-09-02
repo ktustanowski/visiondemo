@@ -21,8 +21,17 @@ final class ImageProcessingViewController: UIViewController {
     
     @IBAction func didTapLoadImageButton(_ sender: UIButton) {
         saveImageButton.isHidden = true
+        presentImagePicker(source: .photoLibrary)
+    }
+    
+    @IBAction func didTapTakePictureButton(_ sender: UIButton) {
+        saveImageButton.isHidden = true
+        presentImagePicker(source: .camera)
+    }
+
+    private func presentImagePicker(source:  UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .photoLibrary
+        imagePicker.sourceType = source
         imagePicker.delegate = self
         present(imagePicker, animated: true)
     }
