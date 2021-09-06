@@ -8,3 +8,9 @@ The list of Vision articles:
 <img src="Images/1.empty.png" alt="Empty" width="200"/> <img src="Images/2.select.image.png" alt="Select the image" width="200"/> <img src="Images/3.processing.png" alt="Processing" width="200"/> <img src="Images/4.joints.visible.png" alt="Body joints presented" width="200"/>
 
 Photo by [Thao Le Hoang](https://unsplash.com/@h4x0r3?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/karate?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+- #9 from 07.09.2021 - [Expanding the Vision](https://cornerbit.tech/expanding-the-vision/) using application version [0.2.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.2.0)
+
+<img src="Images/v020_1.png" alt="Image loaded" width="200"/> <img src="Images/v020_2.png" alt="Body pose detected" width="200"/> <img src="Images/v020_3.png" alt="Body pose and hand pose detected" width="200"/> <img src="Images/v020_4.png" alt="Body pose, hand pose and, face landmarks detected" width="200"/>
+
+Photo by [bruce mars](https://unsplash.com/@brucemars?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/karate?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
