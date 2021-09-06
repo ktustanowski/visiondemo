@@ -12,4 +12,9 @@ extension UIColor {
         guard let primary = UIColor(named: "Primary") else { fatalError("No color named primary!") }
         return primary
     }
+    
+    static var background: UIColor {
+        guard let primary = UIColor(named: "Background") else { fatalError("No color named primary!") }
+        return primary
+    }
 }

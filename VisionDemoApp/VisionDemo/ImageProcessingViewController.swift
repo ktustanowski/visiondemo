@@ -16,10 +16,11 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var handPoseButton: UIButton!
     @IBOutlet private weak var faceLandmarksButton: UIButton!
     @IBOutlet private weak var durationLabel: UILabel!
+    @IBOutlet private weak var stopwatchImage: UIImageView!
     private var originalImage: UIImage?
     
     private let visionQueue = DispatchQueue.global(qos: .userInitiated)
-
+    
     @IBAction func didTapSaveImageButton(_ sender: UIButton) {
         guard let image = imageView.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
@@ -34,7 +35,7 @@ final class ImageProcessingViewController: UIViewController {
         saveImageButton.isHidden = true
         presentImagePicker(source: .camera)
     }
-
+    
     @IBAction func didTapSelectRequestButton(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         
@@ -42,7 +43,7 @@ final class ImageProcessingViewController: UIViewController {
         guard let image = imageView.image else { return }
         process(image)
     }
-
+    
     private func presentImagePicker(source:  UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
@@ -53,6 +54,8 @@ final class ImageProcessingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         saveImageButton.isHidden = true
+        durationLabel.isHidden = true
+        stopwatchImage.isHidden = true
     }
 }
 
@@ -84,27 +87,24 @@ private extension ImageProcessingViewController {
         let isBodyPoseRequired = self.bodyPoseButton.isSelected
         let isHandPoseRequired = self.handPoseButton.isSelected
         let isFaceLandmarksRequired = self.faceLandmarksButton.isSelected
-
+        
         guard isBodyPoseRequired || isHandPoseRequired || isFaceLandmarksRequired else {
             imageView.image = originalImage
             return
         }
         
-        activityIndicator.startAnimating()
-
+        updateUI(isProcessing: true)
+        durationLabel.text = "0.0"
+        
         visionQueue.async { [weak self] in
             guard let self = self else { return }
-            let bodyPoseRequest = isBodyPoseRequired ? VNDetectHumanBodyPoseRequest() : nil
-            let handPoseRequest = isHandPoseRequired ? VNDetectHumanHandPoseRequest() : nil
-            let faceLandmarks = isFaceLandmarksRequired ? VNDetectFaceLandmarksRequest() : nil
+            let requests = [isBodyPoseRequired ? VNDetectHumanBodyPoseRequest() : nil,
+                            isHandPoseRequired ? VNDetectHumanHandPoseRequest(maximumHandCount: 10) : nil,
+                            isFaceLandmarksRequired ? VNDetectFaceLandmarksRequest() : nil].compactMap { $0 }
 
-            let horizonRequest = VNDetectContoursRequest()
-            
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
-                                                      orientation: .init(image.imageOrientation),
-                                                      options: [:])            
-
-            let requests = [faceLandmarks, handPoseRequest, bodyPoseRequest].compactMap { $0 }
+                                                       orientation: .init(image.imageOrientation),
+                                                       options: [:])
             
             var processingTime: Double = 0.0
             
@@ -113,73 +113,71 @@ private extension ImageProcessingViewController {
                 try requestHandler.perform(requests)
                 processingTime = (Date().timeIntervalSince(startProcessingDate) * 100).rounded() / 100
             } catch {
-                self.activityIndicator.stopAnimating()
+                self.updateUI(isProcessing: true)
                 print("Can't make the request due to \(error)")
             }
-            
-            var points = [CGPoint]()
 
-            if let results = horizonRequest.results {
-                print(results)
-            }
+            let resultPointsProviders = requests.compactMap { $0 as? ResultPointsProviding }
             
-            if let results = faceLandmarks?.results as? [VNFaceObservation] {
-                let faceLandmarks = results.flatMap { result in
-                    result.landmarks?.allPoints?.pointsInImage(imageSize: image.size) ?? []
-                }
-                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
-
-                points.append(contentsOf: faceLandmarks)
-            }
+            let openPointsGroups = resultPointsProviders
+                .flatMap { $0.openPointGroups(projectedOnto: image) }
             
-            if let results = bodyPoseRequest?.results {
-                let bodyJointsPoints = results.flatMap { result in
-                    result.availableJointNames
-                        .compactMap { try? result.recognizedPoint($0) }
-                        .filter { $0.confidence > 0.1 }
-                }
-                .map { $0.location(in: image) }
-                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            let closedPointsGroups = resultPointsProviders
+                .flatMap { $0.closedPointGroups(projectedOnto: image) }
 
-                points.append(contentsOf: bodyJointsPoints)
-            }
-            
-            if let results = handPoseRequest?.results {
-                let handJointsPoints = results.flatMap { result in
-                    result.availableJointNames
-                        .compactMap { try? result.recognizedPoint($0) }
-                        .filter { $0.confidence > 0.1 }
-                }
-                .map { $0.location(in: image) }
-                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            var points: [CGPoint]?
+            let isDetectingFaceLandmarks = requests.filter { ($0 as? VNDetectFaceLandmarksRequest)?.results?.isEmpty == false }.isEmpty == false
 
-                points.append(contentsOf: handJointsPoints)
-            }
+            points = resultPointsProviders
+                .filter { !isDetectingFaceLandmarks || isDetectingFaceLandmarks && !($0 is VNDetectHumanBodyPoseRequest) }
+                .flatMap { $0.pointsProjected(onto: image) }
+
             
             DispatchQueue.main.async {
-                self.durationLabel.text = "\(processingTime)"
-                self.activityIndicator.stopAnimating()
-                self.imageView.image = image.draw(points:  points,
-                                                  fillColor: .primary,
-                                                  strokeColor: .white)
+                self.durationLabel.text = "\(processingTime)s"
+                self.updateUI(isProcessing: false)
+                self.imageView.image = image.draw(openPaths: openPointsGroups,
+                                                  closedPaths: closedPointsGroups,
+                                                  points: points)
+
                 self.saveImageButton.isHidden = false
             }
         }
     }
 }
 
+private extension ImageProcessingViewController {
+    func updateUI(isProcessing: Bool) {
+        durationLabel.isHidden = isProcessing
+        stopwatchImage.isHidden = isProcessing
+        
+        if isProcessing {
+            self.activityIndicator.startAnimating()
+        } else {
+            self.activityIndicator.stopAnimating()
+        }
+    }
+}
+
 extension UIImage {
-    func draw(points: [CGPoint],
-              fillColor: UIColor = .white,
-              strokeColor: UIColor = .black,
+    func draw(openPaths: [[CGPoint]]? = nil,
+              closedPaths: [[CGPoint]]? = nil,
+              points: [CGPoint]? = nil,
+              fillColor: UIColor = .primary,
+              strokeColor: UIColor = .primary,
               radius: CGFloat = 5,
-              lineWidth: CGFloat = 1) -> UIImage? {
+              lineWidth: CGFloat = 2) -> UIImage? {
         let scale: CGFloat = 0
+
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         draw(at: CGPoint.zero)
 
+// Uncomment to draw gray background
+//        let rect = CGRect(origin: .zero, size: size)
+//        UIColor.background.setFill()
+//        UIRectFill(rect)
         
-        points.forEach { point in
+        points?.forEach { point in
             let path = UIBezierPath(arcCenter: point,
                                     radius: radius,
                                     startAngle: CGFloat(0),
@@ -192,6 +190,14 @@ extension UIImage {
             
             path.fill()
             path.stroke()
+        }
+
+        openPaths?.forEach { points in
+            draw(points: points, isClosed: false, color: strokeColor, lineWidth: lineWidth)
+        }
+
+        closedPaths?.forEach { points in
+            draw(points: points, isClosed: true, color: strokeColor, lineWidth: lineWidth)
         }
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -200,89 +206,71 @@ extension UIImage {
         return newImage
     }
     
-    func draw(openPaths: [CGPoint],
-              closedPaths: [CGPoint],
-              points: [CGPoint],
-              fillColor: UIColor = .white,
-              strokeColor: UIColor = .black,
-              radius: CGFloat = 5,
-              lineWidth: CGFloat = 2) -> UIImage? {
-        let scale: CGFloat = 0
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        draw(at: CGPoint.zero)
-        
-        points.forEach { point in
-            let path = UIBezierPath(arcCenter: point,
-                                    radius: radius,
-                                    startAngle: CGFloat(0),
-                                    endAngle: CGFloat(Double.pi * 2),
-                                    clockwise: true)
-            
-            fillColor.setFill()
-            strokeColor.setStroke()
-            path.lineWidth = lineWidth
-            
-            path.fill()
-            path.stroke()
-        }
+    private func draw(points: [CGPoint], isClosed: Bool, color: UIColor, lineWidth: CGFloat) {
+        let bezierPath = UIBezierPath()
+        bezierPath.drawLinePath(for: points, isClosed: isClosed)
+        color.setStroke()
+        bezierPath.lineWidth = lineWidth
+        bezierPath.stroke()
+    }
+}
 
-        let path = UIBezierPath()
-        points.enumerated().forEach { iterator in
+extension UIBezierPath {
+    func drawLinePath(for points: [CGPoint], isClosed: Bool) {
+        points.enumerated().forEach { [unowned self] iterator in
             let index = iterator.offset
             let point = iterator.element
+
+            let isFirst = index == 0
+            let isLast = index == points.count - 1
             
-            if index == 0 {
-                path.move(to: point)
+            if isFirst {
+                move(to: point)
+            } else if isLast {
+                addLine(to: point)
+                move(to: point)
+                
+                guard isClosed, let firstItem = points.first else { return }
+                addLine(to: firstItem)
             } else {
-                path.addLine(to: point)
-                path.move(to: point)
+                addLine(to: point)
+                move(to: point)
             }
         }
-        
-        fillColor.setFill()
-        strokeColor.setStroke()
-        path.lineWidth = lineWidth
-        
-        path.fill()
-        path.stroke()
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
-        return newImage
     }
 }
 
 extension UIImage {
-  func resizeImage(to newSize: CGSize) -> UIImage? {
-    let size = self.size
-    let widthRatio  = newSize.width  / size.width
-    let heightRatio = newSize.height / size.height
-    let newSize = widthRatio > heightRatio ? CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-                                           : CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
-    let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-
-    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-    self.draw(in: rect)
-    let newImage = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-
-    return newImage
-  }
+    func resizeImage(to newSize: CGSize) -> UIImage? {
+        let size = self.size
+        let widthRatio  = newSize.width  / size.width
+        let heightRatio = newSize.height / size.height
+        let newSize = widthRatio > heightRatio ? CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+                                               : CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        self.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
 }
+
 extension CGImagePropertyOrientation {
     init(_ uiOrientation: UIImage.Orientation) {
         switch uiOrientation {
-            case .up: self = .up
-            case .upMirrored: self = .upMirrored
-            case .down: self = .down
-            case .downMirrored: self = .downMirrored
-            case .left: self = .left
-            case .leftMirrored: self = .leftMirrored
-            case .right: self = .right
-            case .rightMirrored: self = .rightMirrored
-            @unknown default:
-                self = .up
+        case .up: self = .up
+        case .upMirrored: self = .upMirrored
+        case .down: self = .down
+        case .downMirrored: self = .downMirrored
+        case .left: self = .left
+        case .leftMirrored: self = .leftMirrored
+        case .right: self = .right
+        case .rightMirrored: self = .rightMirrored
+        @unknown default:
+            self = .up
         }
     }
 }
@@ -301,5 +289,116 @@ extension VNRecognizedPoint {
         VNImagePointForNormalizedPoint(location,
                                        Int(image.size.width),
                                        Int(image.size.height))
+    }
+}
+
+protocol ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint]
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]]
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]]
+}
+
+extension VNDetectHumanHandPoseRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        point(jointGroups: [[.wrist, .indexMCP, .indexPIP, .indexDIP, .indexTip],
+                            [.wrist, .littleMCP, .littlePIP, .littleDIP, .littleTip],
+                            [.wrist, .middleMCP, .middlePIP, .middleDIP, .middleTip],
+                            [.wrist, .ringMCP, .ringPIP, .ringDIP, .ringTip],
+                            [.wrist, .thumbCMC, .thumbMP, .thumbIP, .thumbTip]],
+                            projectedOnto: image)
+    }
+    
+    func point(jointGroups: [[VNHumanHandPoseObservation.JointName]], projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results else { return [] }
+        let pointGroups = results.map { result in
+            jointGroups
+                .compactMap { joints in
+                    joints.compactMap { joint in
+                        try? result.recognizedPoint(joint)
+                    }
+                    .filter { $0.confidence > 0.1 }
+                    .map { $0.location(in: image) }
+                    .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+                }
+        }
+        
+        return pointGroups.flatMap { $0 }
+    }
+    
+    convenience init(maximumHandCount: Int) {
+        self.init()
+        self.maximumHandCount = maximumHandCount
+    }
+}
+
+extension VNDetectHumanBodyPoseRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] {
+        point(jointGroups: [[.nose, .leftEye, .leftEar, .rightEye, .rightEar]], projectedOnto: image).flatMap { $0 }
+    }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        point(jointGroups: [[.neck, .leftShoulder, .leftHip, .root, .rightHip, .rightShoulder]], projectedOnto: image)
+    }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        point(jointGroups: [[.leftShoulder, .leftElbow, .leftWrist],
+                            [.rightShoulder, .rightElbow, .rightWrist],
+                            [.leftHip, .leftKnee, .leftAnkle],
+                            [.rightHip, .rightKnee, .rightAnkle]], projectedOnto: image)
+    }
+    
+    func point(jointGroups: [[VNHumanBodyPoseObservation.JointName]], projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results else { return [] }
+        let pointGroups = results.map { result in
+            jointGroups
+                .compactMap { joints in
+                    joints.compactMap { joint in
+                        try? result.recognizedPoint(joint)
+                    }
+                    .filter { $0.confidence > 0.1 }
+                    .map { $0.location(in: image) }
+                    .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+                }
+        }
+        
+        return pointGroups.flatMap { $0 }
+    }
+}
+
+extension VNDetectFaceLandmarksRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNFaceObservation] else { return [] }
+        let landmarks = results.compactMap { [$0.landmarks?.leftEyebrow,
+                                              $0.landmarks?.rightEyebrow,
+                                              $0.landmarks?.faceContour,
+                                              $0.landmarks?.noseCrest,
+                                              $0.landmarks?.medianLine].compactMap { $0 } }
+        
+        return points(landmarks: landmarks, projectedOnto: image)
+    }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNFaceObservation] else { return [] }
+        let landmarks = results.compactMap { [$0.landmarks?.leftEye,
+                                              $0.landmarks?.rightEye,
+                                              $0.landmarks?.outerLips,
+                                              $0.landmarks?.innerLips,
+                                              $0.landmarks?.nose].compactMap { $0 } }
+        
+        return points(landmarks: landmarks, projectedOnto: image)
+    }
+    
+    func points(landmarks: [[VNFaceLandmarkRegion2D]], projectedOnto image: UIImage) -> [[CGPoint]] {
+        let faceLandmarks = landmarks.flatMap { $0 }
+            .compactMap { landmark in
+                landmark.pointsInImage(imageSize: image.size)
+                    .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            }
+        
+        return faceLandmarks
     }
 }
