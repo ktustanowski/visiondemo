@@ -70,14 +70,14 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rEn-YN-q2c">
                                 <rect key="frame" x="20" y="76.5" width="374" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to detect" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UwH-IO-LxC">
-                                        <rect key="frame" x="0.0" y="0.0" width="101" height="44"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UwH-IO-LxC">
+                                        <rect key="frame" x="0.0" y="0.0" width="114" height="44"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qj-oD-eSc">
-                                        <rect key="frame" x="109" y="0.0" width="44" height="44"/>
+                                        <rect key="frame" x="122" y="0.0" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="emn-SI-E79"/>
                                             <constraint firstAttribute="height" constant="44" id="tJ1-6o-eZi"/>
@@ -91,7 +91,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="upq-Rw-xqX">
-                                        <rect key="frame" x="161" y="0.0" width="44" height="44"/>
+                                        <rect key="frame" x="174" y="0.0" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="36F-3c-tcL"/>
                                             <constraint firstAttribute="height" constant="44" id="cWR-o4-e7f"/>
@@ -105,7 +105,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hn4-Oi-q7F">
-                                        <rect key="frame" x="213" y="0.0" width="44" height="44"/>
+                                        <rect key="frame" x="226" y="0.0" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="dIs-9x-xlM"/>
                                             <constraint firstAttribute="height" constant="44" id="gp7-rm-mZb"/>
@@ -121,7 +121,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hB-Yh-Miy">
-                                        <rect key="frame" x="265" y="0.0" width="44" height="44"/>
+                                        <rect key="frame" x="278" y="0.0" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="62D-Jo-HPL"/>
                                             <constraint firstAttribute="width" constant="44" id="iQ4-wr-lEl"/>
@@ -136,10 +136,22 @@
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Dy-y1-evy"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8jr-zE-cPv">
-                                        <rect key="frame" x="317" y="0.0" width="57" height="44"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBu-jX-bEF">
+                                        <rect key="frame" x="330" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="6W1-83-NSJ"/>
+                                            <constraint firstAttribute="width" constant="44" id="W6F-65-Ode"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="tintColor" name="Primary"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="person.crop.square" catalog="system" renderingMode="template"/>
+                                        </state>
+                                        <state key="selected" image="person.crop.square.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="abA-jX-qRf"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stopwatch" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mWV-fH-Mla">
@@ -180,6 +192,7 @@
                         <outlet property="barcodeButton" destination="4hB-Yh-Miy" id="hQj-bN-hP3"/>
                         <outlet property="bodyPoseButton" destination="2qj-oD-eSc" id="EBl-DR-9zW"/>
                         <outlet property="durationLabel" destination="xcO-N2-BCz" id="Bgt-NK-fJq"/>
+                        <outlet property="faceBodyRectangles" destination="NBu-jX-bEF" id="4P3-Zv-BBa"/>
                         <outlet property="faceLandmarksButton" destination="Hn4-Oi-q7F" id="tuL-lL-wRc"/>
                         <outlet property="handPoseButton" destination="upq-Rw-xqX" id="Y05-aK-Oa1"/>
                         <outlet property="imageView" destination="G3z-1V-rra" id="zpE-rG-zqQ"/>
@@ -203,6 +216,8 @@
         <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
         <image name="hand.raised" catalog="system" width="128" height="128"/>
         <image name="hand.raised.fill" catalog="system" width="128" height="124"/>
+        <image name="person.crop.square" catalog="system" width="128" height="114"/>
+        <image name="person.crop.square.fill" catalog="system" width="128" height="114"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="stopwatch" catalog="system" width="121" height="128"/>
         <namedColor name="Primary">

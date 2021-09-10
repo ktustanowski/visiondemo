@@ -17,6 +17,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var faceLandmarksButton: UIButton!
     @IBOutlet private weak var durationLabel: UILabel!
     @IBOutlet private weak var barcodeButton: UIButton!
+    @IBOutlet private weak var faceBodyRectangles: UIButton!
     @IBOutlet private weak var stopwatchImage: UIImageView!
     private var originalImage: UIImage?
     
@@ -89,8 +90,9 @@ private extension ImageProcessingViewController {
         let isHandPoseRequired = self.handPoseButton.isSelected
         let isFaceLandmarksRequired = self.faceLandmarksButton.isSelected
         let isBarcodesRequired = self.barcodeButton.isSelected
+        let isFaceBodyRectangles = self.faceBodyRectangles.isSelected
         
-        guard isBodyPoseRequired || isHandPoseRequired || isFaceLandmarksRequired || isBarcodesRequired else {
+        guard isBodyPoseRequired || isHandPoseRequired || isFaceLandmarksRequired || isBarcodesRequired || isFaceBodyRectangles else {
             imageView.image = originalImage
             return
         }
@@ -103,7 +105,9 @@ private extension ImageProcessingViewController {
             let requests = [isBodyPoseRequired ? VNDetectHumanBodyPoseRequest() : nil,
                             isHandPoseRequired ? VNDetectHumanHandPoseRequest(maximumHandCount: 10) : nil,
                             isFaceLandmarksRequired ? VNDetectFaceLandmarksRequest() : nil,
-                            isBarcodesRequired ? VNDetectBarcodesRequest() : nil ].compactMap { $0 }
+                            isBarcodesRequired ? VNDetectBarcodesRequest() : nil,
+                            isFaceBodyRectangles ? VNDetectFaceRectanglesRequest() : nil,
+                            isFaceBodyRectangles ? VNDetectHumanRectanglesRequest() : nil ].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),
@@ -498,4 +502,38 @@ extension VNDetectBarcodesRequest: ResultPointsProviding {
                                    text: text)
         }
     }
+}
+
+extension VNDetectFaceRectanglesRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNFaceObservation] else { return [] }
+        
+        return results.map { result in
+            result.boundingBox.rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+        }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+}
+
+extension VNDetectHumanRectanglesRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNDetectedObjectObservation] else { return [] }
+        
+        return results.map { result in
+            result.boundingBox.rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+        }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
 }
