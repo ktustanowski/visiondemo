@@ -18,6 +18,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var durationLabel: UILabel!
     @IBOutlet private weak var barcodeButton: UIButton!
     @IBOutlet private weak var faceBodyRectangles: UIButton!
+    @IBOutlet private weak var textButton: UIButton!
     @IBOutlet private weak var stopwatchImage: UIImageView!
     private var originalImage: UIImage?
     
@@ -48,9 +49,14 @@ final class ImageProcessingViewController: UIViewController {
     
     private func presentImagePicker(source:  UIImagePickerController.SourceType) {
         let imagePicker = UIImagePickerController()
+        #if targetEnvironment(simulator)
+        imagePicker.sourceType = .photoLibrary
+        #else
         imagePicker.sourceType = source
+        #endif
         imagePicker.delegate = self
         present(imagePicker, animated: true)
+        
     }
     
     override func viewDidLoad() {
@@ -90,24 +96,28 @@ private extension ImageProcessingViewController {
         let isHandPoseRequired = self.handPoseButton.isSelected
         let isFaceLandmarksRequired = self.faceLandmarksButton.isSelected
         let isBarcodesRequired = self.barcodeButton.isSelected
-        let isFaceBodyRectangles = self.faceBodyRectangles.isSelected
+        let isFaceBodyRectanglesRequired = self.faceBodyRectangles.isSelected
+        let isTextButton = self.textButton.isSelected
         
-        guard isBodyPoseRequired || isHandPoseRequired || isFaceLandmarksRequired || isBarcodesRequired || isFaceBodyRectangles else {
+        guard isBodyPoseRequired || isHandPoseRequired ||
+                isFaceLandmarksRequired || isBarcodesRequired ||
+                isFaceBodyRectanglesRequired || isTextButton else {
             imageView.image = originalImage
             return
         }
         
         updateUI(isProcessing: true)
         durationLabel.text = "0.0"
-        
+                
         visionQueue.async { [weak self] in
             guard let self = self else { return }
             let requests = [isBodyPoseRequired ? VNDetectHumanBodyPoseRequest() : nil,
                             isHandPoseRequired ? VNDetectHumanHandPoseRequest(maximumHandCount: 10) : nil,
                             isFaceLandmarksRequired ? VNDetectFaceLandmarksRequest() : nil,
                             isBarcodesRequired ? VNDetectBarcodesRequest() : nil,
-                            isFaceBodyRectangles ? VNDetectFaceRectanglesRequest() : nil,
-                            isFaceBodyRectangles ? VNDetectHumanRectanglesRequest() : nil ].compactMap { $0 }
+                            isFaceBodyRectanglesRequired ? VNDetectFaceRectanglesRequest() : nil,
+                            isFaceBodyRectanglesRequired ? VNDetectHumanRectanglesRequest() : nil,
+                            isTextButton ? VNDetectTextRectanglesRequest(reportCharacterBoxes: true) : nil].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),
@@ -305,13 +315,17 @@ extension CGPoint {
         
         return self.applying(transform)
     }
+    
+    func location(in image: UIImage) -> CGPoint {
+        VNImagePointForNormalizedPoint(self,
+                                       Int(image.size.width),
+                                       Int(image.size.height))
+    }
 }
 
 extension VNRecognizedPoint {
     func location(in image: UIImage) -> CGPoint {
-        VNImagePointForNormalizedPoint(location,
-                                       Int(image.size.width),
-                                       Int(image.size.height))
+        location.location(in: image)
     }
 }
 
@@ -536,4 +550,41 @@ extension VNDetectHumanRectanglesRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+}
+
+extension VNDetectTextRectanglesRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNTextObservation] else { return [] }
+        
+        return results.flatMap { result -> [[CGPoint]] in
+            let textPoints = result.boundingBox.rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            
+            let charactersPoints = result.characterBoxes?
+                .compactMap { observation in
+                    observation.points
+                        .map { $0.location(in: image) }
+                        .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+                } ?? []
+            
+            return [textPoints] + charactersPoints
+        }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    
+    convenience init(reportCharacterBoxes: Bool = false) {
+        self.init()
+        self.reportCharacterBoxes = reportCharacterBoxes
+    }
+}
+
+extension VNRectangleObservation {
+    var points: [CGPoint] {
+        return [topLeft, topRight, bottomRight, bottomLeft]
+    }
 }
