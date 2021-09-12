@@ -9,8 +9,8 @@ import UIKit
 import Vision
 
 final class ImageProcessingViewController: UIViewController {
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var saveImageButton: UIButton!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var saveImageButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var bodyPoseButton: UIButton!
     @IBOutlet private weak var handPoseButton: UIButton!
@@ -22,7 +22,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var stopwatchImage: UIImageView!
     private var originalImage: UIImage?
     
-    private let visionQueue = DispatchQueue.global(qos: .userInitiated)
+    let visionQueue = DispatchQueue.global(qos: .userInitiated)
     
     @IBAction func didTapSaveImageButton(_ sender: UIButton) {
         guard let image = imageView.image else { return }
@@ -111,6 +111,7 @@ private extension ImageProcessingViewController {
                 
         visionQueue.async { [weak self] in
             guard let self = self else { return }
+            
             let requests = [isBodyPoseRequired ? VNDetectHumanBodyPoseRequest() : nil,
                             isHandPoseRequired ? VNDetectHumanHandPoseRequest(maximumHandCount: 10) : nil,
                             isFaceLandmarksRequired ? VNDetectFaceLandmarksRequest() : nil,
@@ -181,6 +182,7 @@ private extension ImageProcessingViewController {
 }
 
 extension UIImage {
+
     func draw(openPaths: [[CGPoint]]? = nil,
               closedPaths: [[CGPoint]]? = nil,
               points: [CGPoint]? = nil,
@@ -224,7 +226,7 @@ extension UIImage {
         
         displayableTexts.forEach { displayableText in
             let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .bold),
-                              NSAttributedString.Key.foregroundColor: UIColor.primary,
+                              NSAttributedString.Key.foregroundColor: fillColor,
                               NSAttributedString.Key.backgroundColor: UIColor.black]
 
             displayableText.text.draw(with: displayableText.frame,
@@ -475,21 +477,12 @@ extension VNDetectBarcodesRequest: ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
-
-// #1
-//        guard let results = results as? [VNBarcodeObservation] else { return [] }
-//        let points = results.map { result in
-//            result.boundingBox.rectangle(in: image).points
-//                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
-//        }
-
-// #2
         return uniqueObservations.map { $0.boundingBox.rectangle(in: image).points
             .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
         }
     }
     
-    private var uniqueObservations: [VNBarcodeObservation] {
+    var uniqueObservations: [VNBarcodeObservation] {
         guard let results = results as? [VNBarcodeObservation] else { return [] }
         let payloads = results.compactMap { $0.payloadStringValue }
         let uniquePayloads = Set(payloads)
@@ -509,7 +502,7 @@ extension VNDetectBarcodesRequest: ResultPointsProviding {
             let origin = CGPoint(x: projectedFrame.origin.x,
                                  y: projectedFrame.origin.y)
             
-            let frame = CGRect(origin: origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height),
+            let frame = CGRect(origin: origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - projectedFrame.height),
                                size: projectedFrame.size)
 
             return DisplayableText(frame: frame,
