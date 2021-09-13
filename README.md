@@ -16,3 +16,4 @@ Photo by [Thao Le Hoang](https://unsplash.com/@h4x0r3?utm_source=unsplash&utm_me
 Photo by [bruce mars](https://unsplash.com/@brucemars?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/karate?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 - #10 from 14.09.2021 - [Barcode detection using Vision framework](https://cornerbit.tech/barcode-detection-using-vision-framework) using application version [0.3.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.3.0)
+<img src="Images/v030.png" alt="Codes detected" width="200"/>
