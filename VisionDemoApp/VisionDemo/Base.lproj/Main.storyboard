@@ -76,51 +76,50 @@
                                 <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="rEn-YN-q2c">
-                                <rect key="frame" x="20" y="76.5" width="372" height="44"/>
+                                <rect key="frame" x="20" y="88" width="372" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qj-oD-eSc">
-                                        <rect key="frame" x="0.0" y="0.0" width="55.5" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="46.5" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="tJ1-6o-eZi"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="tintColor" name="Primary"/>
-                                        <state key="normal" image="figure.walk.circle" catalog="system"/>
-                                        <state key="selected" image="figure.walk.circle.fill" catalog="system"/>
+                                        <state key="normal" title="🤸‍♂️"/>
+                                        <state key="selected" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MGy-Xh-CZR"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="upq-Rw-xqX">
-                                        <rect key="frame" x="63.5" y="0.0" width="55" height="44"/>
+                                        <rect key="frame" x="54.5" y="0.0" width="46" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="cWR-o4-e7f"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="tintColor" name="Primary"/>
-                                        <state key="normal" image="hand.raised" catalog="system"/>
-                                        <state key="selected" image="hand.raised.fill" catalog="system"/>
+                                        <state key="normal" title="✋"/>
+                                        <state key="selected" title="✋" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WdT-ff-WYf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hn4-Oi-q7F">
-                                        <rect key="frame" x="126.5" y="0.0" width="55.5" height="44"/>
+                                        <rect key="frame" x="108.5" y="0.0" width="46.5" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="gp7-rm-mZb"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="tintColor" name="Primary"/>
-                                        <state key="normal">
-                                            <imageReference key="image" image="face.smiling" catalog="system" renderingMode="template"/>
-                                        </state>
-                                        <state key="selected" image="face.smiling.fill" catalog="system"/>
+                                        <state key="normal" title="😀"/>
+                                        <state key="selected" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TB6-bh-MMa"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hB-Yh-Miy">
-                                        <rect key="frame" x="190" y="0.0" width="55.5" height="44"/>
+                                        <rect key="frame" x="163" y="0.0" width="46" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="62D-Jo-HPL"/>
                                         </constraints>
@@ -129,13 +128,14 @@
                                         <state key="normal">
                                             <imageReference key="image" image="barcode" catalog="system" renderingMode="template"/>
                                         </state>
-                                        <state key="selected" image="barcode.viewfinder" catalog="system"/>
+                                        <state key="selected" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Dy-y1-evy"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBu-jX-bEF">
-                                        <rect key="frame" x="253.5" y="0.0" width="55" height="44"/>
+                                        <rect key="frame" x="217" y="0.0" width="46.5" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="6W1-83-NSJ"/>
                                         </constraints>
@@ -144,24 +144,36 @@
                                         <state key="normal">
                                             <imageReference key="image" image="person.crop.square" catalog="system" renderingMode="template"/>
                                         </state>
-                                        <state key="selected" image="person.crop.square.fill" catalog="system"/>
+                                        <state key="selected" image="person.crop.square.fill" catalog="system" backgroundImage="rectangle"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="abA-jX-qRf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLS-Tc-aMH">
-                                        <rect key="frame" x="316.5" y="0.0" width="55.5" height="44"/>
+                                        <rect key="frame" x="271.5" y="0.0" width="46" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="i2w-6Q-ohr"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="tintColor" name="Primary"/>
-                                        <state key="normal">
-                                            <imageReference key="image" image="textformat.size.smaller" catalog="system" renderingMode="template"/>
-                                        </state>
-                                        <state key="selected" image="textbox" catalog="system"/>
+                                        <state key="normal" title="🔤"/>
+                                        <state key="selected" title="🔤" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wp7-fo-qeY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbz-CB-JCQ">
+                                        <rect key="frame" x="325.5" y="0.0" width="46.5" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Dbz-u5-SX4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="tintColor" name="Primary"/>
+                                        <state key="normal" title="🐶"/>
+                                        <state key="selected" backgroundImage="rectangle" catalog="system"/>
+                                        <connections>
+                                            <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LN0-NC-dxd"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -170,12 +182,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="oZH-mS-jRl" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="0zP-2l-gLB"/>
                             <constraint firstItem="rEn-YN-q2c" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="1XJ-F0-JpO"/>
                             <constraint firstItem="xcO-N2-BCz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="12" id="1lJ-0A-1o1"/>
-                            <constraint firstItem="oZH-mS-jRl" firstAttribute="centerX" secondItem="xcO-N2-BCz" secondAttribute="centerX" id="IbY-fe-8YT"/>
                             <constraint firstAttribute="bottom" secondItem="G3z-1V-rra" secondAttribute="bottom" id="Mkj-U1-wzf"/>
                             <constraint firstItem="oZH-mS-jRl" firstAttribute="centerY" secondItem="xcO-N2-BCz" secondAttribute="centerY" id="OUc-34-2O0"/>
-                            <constraint firstItem="rEn-YN-q2c" firstAttribute="top" secondItem="xcO-N2-BCz" secondAttribute="bottom" id="Sfc-RI-ilz"/>
                             <constraint firstItem="D29-uA-QqI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="VbO-Zg-frl"/>
                             <constraint firstItem="xcO-N2-BCz" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="aNY-9t-bQb"/>
                             <constraint firstAttribute="trailing" secondItem="G3z-1V-rra" secondAttribute="trailing" id="dux-Qm-7G9"/>
@@ -187,11 +198,13 @@
                             <constraint firstItem="D29-uA-QqI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="n0J-xC-WZZ"/>
                             <constraint firstItem="1Z5-a7-QTa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="o4F-mK-nFx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1Z5-a7-QTa" secondAttribute="trailing" constant="20" id="pqZ-U4-pzh"/>
+                            <constraint firstItem="rEn-YN-q2c" firstAttribute="top" secondItem="1Z5-a7-QTa" secondAttribute="bottom" id="uM4-OK-l2J"/>
                             <constraint firstItem="G3z-1V-rra" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="yM4-bC-IUr"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="oZH-mS-jRl" id="zan-jP-c7c"/>
+                        <outlet property="animalsButton" destination="zbz-CB-JCQ" id="QcW-hg-FVe"/>
                         <outlet property="barcodeButton" destination="4hB-Yh-Miy" id="hQj-bN-hP3"/>
                         <outlet property="bodyPoseButton" destination="2qj-oD-eSc" id="EBl-DR-9zW"/>
                         <outlet property="durationLabel" destination="xcO-N2-BCz" id="Bgt-NK-fJq"/>
@@ -211,21 +224,13 @@
     </scenes>
     <resources>
         <image name="barcode" catalog="system" width="128" height="93"/>
-        <image name="barcode.viewfinder" catalog="system" width="128" height="115"/>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
-        <image name="face.smiling" catalog="system" width="128" height="121"/>
-        <image name="face.smiling.fill" catalog="system" width="128" height="121"/>
-        <image name="figure.walk.circle" catalog="system" width="128" height="121"/>
-        <image name="figure.walk.circle.fill" catalog="system" width="128" height="121"/>
         <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
-        <image name="hand.raised" catalog="system" width="128" height="128"/>
-        <image name="hand.raised.fill" catalog="system" width="128" height="124"/>
         <image name="person.crop.square" catalog="system" width="128" height="114"/>
         <image name="person.crop.square.fill" catalog="system" width="128" height="114"/>
         <image name="photo" catalog="system" width="128" height="93"/>
+        <image name="rectangle" catalog="system" width="128" height="93"/>
         <image name="stopwatch" catalog="system" width="121" height="128"/>
-        <image name="textbox" catalog="system" width="128" height="91"/>
-        <image name="textformat.size.smaller" catalog="system" width="128" height="122"/>
         <namedColor name="Primary">
             <color red="1" green="0.10199999809265137" blue="0.45899999141693115" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
