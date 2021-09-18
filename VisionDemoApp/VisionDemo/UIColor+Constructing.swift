@@ -2,7 +2,7 @@
 //  UIColor+Constructing.swift
 //  VisionDemo
 //
-//  Created by Semerkchet on 25/08/2021.
+//  Created by Kamil Tustanowski on 25/08/2021.
 //
 
 import UIKit

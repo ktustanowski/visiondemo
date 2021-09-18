@@ -1,8 +1,8 @@
 //
-//  ImageProcessingViewController+BarcodesDetection.swift
+//  ImageProcessingViewController+AnimalsDetection.swift
 //  VisionDemo
 //
-//  Created by Kamil Tustanowski on 11/09/2021.
+//  Created by Kamil Tustanowski on 16/09/2021.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Vision
 extension ImageProcessingViewController {
     func process(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
-        let barcodesRequest = VNDetectBarcodesRequest()
+        let animalsRequest = VNRecognizeAnimalsRequest()
         
         let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                    orientation: .init(image.imageOrientation),
@@ -20,23 +20,23 @@ extension ImageProcessingViewController {
         saveImageButton.isHidden = false
         visionQueue.async { [weak self] in
             do {
-                try requestHandler.perform([barcodesRequest])
+                try requestHandler.perform([animalsRequest])
             } catch {
                 print("Can't make the request due to \(error)")
             }
 
-            let results = barcodesRequest.uniqueObservations
+            guard let results = animalsRequest.results as? [VNRecognizedObjectObservation] else { return }
             
-            let boxesAndPayload = results
+            let boxesAndNames = results
                 .map { (box: $0.boundingBox.rectangle(in: image),
-                        payload: $0.payloadStringValue ?? "n/a") }
+                        name: $0.labels.first?.identifier ?? "n/a") }
                 
-            let rectangles = boxesAndPayload.map { $0.box }
+            let rectangles = boxesAndNames.map { $0.box }
                 .map { CGRect(origin: $0.origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - $0.size.height),
                               size: $0.size) }
 
             let displayableTexts = zip(rectangles,
-                                       boxesAndPayload.map { $0.payload })
+                                       boxesAndNames.map { $0.name })
                 .map { DisplayableText(frame: $0.0,
                                        text: $0.1) }
             

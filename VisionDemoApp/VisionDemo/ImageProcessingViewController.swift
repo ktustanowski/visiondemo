@@ -20,6 +20,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var faceBodyRectangles: UIButton!
     @IBOutlet private weak var textButton: UIButton!
     @IBOutlet private weak var stopwatchImage: UIImageView!
+    @IBOutlet private weak var animalsButton: UIButton!
     private var originalImage: UIImage?
     
     let visionQueue = DispatchQueue.global(qos: .userInitiated)
@@ -97,11 +98,13 @@ private extension ImageProcessingViewController {
         let isFaceLandmarksRequired = self.faceLandmarksButton.isSelected
         let isBarcodesRequired = self.barcodeButton.isSelected
         let isFaceBodyRectanglesRequired = self.faceBodyRectangles.isSelected
-        let isTextButton = self.textButton.isSelected
+        let isTextRectanglesRequired = self.textButton.isSelected
+        let isAnimalsRequired = self.animalsButton.isSelected
         
         guard isBodyPoseRequired || isHandPoseRequired ||
                 isFaceLandmarksRequired || isBarcodesRequired ||
-                isFaceBodyRectanglesRequired || isTextButton else {
+                isFaceBodyRectanglesRequired || isTextRectanglesRequired
+                || isAnimalsRequired else {
             imageView.image = originalImage
             return
         }
@@ -118,7 +121,8 @@ private extension ImageProcessingViewController {
                             isBarcodesRequired ? VNDetectBarcodesRequest() : nil,
                             isFaceBodyRectanglesRequired ? VNDetectFaceRectanglesRequest() : nil,
                             isFaceBodyRectanglesRequired ? VNDetectHumanRectanglesRequest() : nil,
-                            isTextButton ? VNDetectTextRectanglesRequest(reportCharacterBoxes: true) : nil].compactMap { $0 }
+                            isTextRectanglesRequired ? VNDetectTextRectanglesRequest(reportCharacterBoxes: true) : nil,
+                            isAnimalsRequired ? VNRecognizeAnimalsRequest() : nil].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),
@@ -153,6 +157,8 @@ private extension ImageProcessingViewController {
                 .filter { !isDetectingFaceLandmarks || isDetectingFaceLandmarks && !($0 is VNDetectHumanBodyPoseRequest) }
                 .flatMap { $0.pointsProjected(onto: image) }
 
+            print(requests.first?.results)
+            
             
             DispatchQueue.main.async {
                 self.durationLabel.text = "\(processingTime)s"
@@ -573,6 +579,38 @@ extension VNDetectTextRectanglesRequest: ResultPointsProviding {
     convenience init(reportCharacterBoxes: Bool = false) {
         self.init()
         self.reportCharacterBoxes = reportCharacterBoxes
+    }
+}
+
+extension VNRecognizeAnimalsRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        guard let results = results as? [VNRecognizedObjectObservation] else { return [] }
+        
+        return results.map { result in
+            return result.boundingBox.rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+        }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] {
+        guard let results = results as? [VNRecognizedObjectObservation] else { return [] }
+        
+        return results.map { result in
+            let name = result.labels.map { $0.identifier }.first ?? "n/a"
+            let projectedFrame = result.boundingBox.rectangle(in: image)
+            let origin = CGPoint(x: projectedFrame.origin.x,
+                                 y: projectedFrame.origin.y)
+            
+            let frame = CGRect(origin: origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - projectedFrame.height),
+                               size: projectedFrame.size)
+
+            return DisplayableText(frame: frame,
+                                   text: name)
+        }
     }
 }
 
