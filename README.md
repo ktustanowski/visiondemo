@@ -17,3 +17,6 @@ Photo by [bruce mars](https://unsplash.com/@brucemars?utm_source=unsplash&utm_me
 
 - #10 from 14.09.2021 - [Barcode detection using Vision framework](https://cornerbit.tech/barcode-detection-using-vision-framework) using application version [0.3.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.3.0)
 <img src="Images/v030.png" alt="Codes detected" width="200"/>
+
+- #11 from 21.09.2021 - [Animals detection using the Vision framework](https://cornerbit.tech/animals-detection-using-the-vision-framework) using application version [0.4.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.4.0)
+<img src="Images/v040.PNG" alt="Codes detected" width="200"/>
