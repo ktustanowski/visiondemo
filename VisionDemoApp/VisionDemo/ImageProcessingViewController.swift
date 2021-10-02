@@ -21,6 +21,8 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var textButton: UIButton!
     @IBOutlet private weak var stopwatchImage: UIImageView!
     @IBOutlet private weak var animalsButton: UIButton!
+    @IBOutlet private weak var attentionButton: UIButton!
+    
     private var originalImage: UIImage?
     
     let visionQueue = DispatchQueue.global(qos: .userInitiated)
@@ -100,11 +102,19 @@ private extension ImageProcessingViewController {
         let isFaceBodyRectanglesRequired = self.faceBodyRectangles.isSelected
         let isTextRectanglesRequired = self.textButton.isSelected
         let isAnimalsRequired = self.animalsButton.isSelected
+        let isAttentionRequired = self.attentionButton.isSelected
         
-        guard isBodyPoseRequired || isHandPoseRequired ||
-                isFaceLandmarksRequired || isBarcodesRequired ||
-                isFaceBodyRectanglesRequired || isTextRectanglesRequired
-                || isAnimalsRequired else {
+        let requiredRequests = [isBodyPoseRequired,
+                                isHandPoseRequired,
+                                isFaceLandmarksRequired,
+                                isBarcodesRequired,
+                                isFaceBodyRectanglesRequired,
+                                isTextRectanglesRequired,
+                                isAnimalsRequired,
+                                isAttentionRequired]
+        let isProcessingRequired = requiredRequests.filter { $0 == true }.isEmpty == false
+        
+        guard isProcessingRequired else {
             imageView.image = originalImage
             return
         }
@@ -122,7 +132,8 @@ private extension ImageProcessingViewController {
                             isFaceBodyRectanglesRequired ? VNDetectFaceRectanglesRequest() : nil,
                             isFaceBodyRectanglesRequired ? VNDetectHumanRectanglesRequest() : nil,
                             isTextRectanglesRequired ? VNDetectTextRectanglesRequest(reportCharacterBoxes: true) : nil,
-                            isAnimalsRequired ? VNRecognizeAnimalsRequest() : nil].compactMap { $0 }
+                            isAnimalsRequired ? VNRecognizeAnimalsRequest() : nil,
+                            isAttentionRequired ? VNGenerateAttentionBasedSaliencyImageRequest() : nil].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),
@@ -156,9 +167,8 @@ private extension ImageProcessingViewController {
             points = resultPointsProviders
                 .filter { !isDetectingFaceLandmarks || isDetectingFaceLandmarks && !($0 is VNDetectHumanBodyPoseRequest) }
                 .flatMap { $0.pointsProjected(onto: image) }
-
-            print(requests.first?.results)
             
+            let images = resultPointsProviders.flatMap { $0.generatedImages }
             
             DispatchQueue.main.async {
                 self.durationLabel.text = "\(processingTime)s"
@@ -166,7 +176,8 @@ private extension ImageProcessingViewController {
                 self.imageView.image = image.draw(openPaths: openPointsGroups,
                                                   closedPaths: closedPointsGroups,
                                                   points: points,
-                                                  displayableTexts: displayableTexts)
+                                                  displayableTexts: displayableTexts,
+                                                  images: images)
 
                 self.saveImageButton.isHidden = false
             }
@@ -193,6 +204,7 @@ extension UIImage {
               closedPaths: [[CGPoint]]? = nil,
               points: [CGPoint]? = nil,
               displayableTexts: [DisplayableText],
+              images: [UIImage]?,
               fillColor: UIColor = .primary,
               strokeColor: UIColor = .primary,
               radius: CGFloat = 5,
@@ -203,10 +215,15 @@ extension UIImage {
         draw(at: CGPoint.zero)
 
 // Uncomment to draw gray background
-//        let rect = CGRect(origin: .zero, size: size)
-//        UIColor.background.setFill()
-//        UIRectFill(rect)
+        let rect = CGRect(origin: .zero, size: size)
+        UIColor.background.setFill()
+        UIRectFill(rect)
         
+        let imageSize = size
+        images?.forEach {
+            $0.draw(in: CGRect(origin: .zero, size: imageSize), blendMode: .hue, alpha: 1.0)
+        }
+
         points?.forEach { point in
             let path = UIBezierPath(arcCenter: point,
                                     radius: radius,
@@ -240,7 +257,7 @@ extension UIImage {
                                       attributes: attributes,
                                       context: nil)
         }
-        
+                
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
@@ -364,6 +381,7 @@ protocol ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]]
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]]
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText]
+    var generatedImages: [UIImage] { get }
 }
 
 extension VNDetectHumanHandPoseRequest: ResultPointsProviding {
@@ -401,6 +419,7 @@ extension VNDetectHumanHandPoseRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectHumanBodyPoseRequest: ResultPointsProviding {
@@ -437,12 +456,14 @@ extension VNDetectHumanBodyPoseRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectFaceLandmarksRequest: ResultPointsProviding {
     func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
     
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNFaceObservation] else { return [] }
         let landmarks = results.compactMap { [$0.landmarks?.leftEyebrow,
                                               $0.landmarks?.rightEyebrow,
@@ -454,6 +475,7 @@ extension VNDetectFaceLandmarksRequest: ResultPointsProviding {
     }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNFaceObservation] else { return [] }
         let landmarks = results.compactMap { [$0.landmarks?.leftEye,
                                               $0.landmarks?.rightEye,
@@ -475,6 +497,7 @@ extension VNDetectFaceLandmarksRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectBarcodesRequest: ResultPointsProviding {
@@ -489,6 +512,7 @@ extension VNDetectBarcodesRequest: ResultPointsProviding {
     }
     
     var uniqueObservations: [VNBarcodeObservation] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNBarcodeObservation] else { return [] }
         let payloads = results.compactMap { $0.payloadStringValue }
         let uniquePayloads = Set(payloads)
@@ -515,6 +539,7 @@ extension VNDetectBarcodesRequest: ResultPointsProviding {
                                    text: text)
         }
     }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectFaceRectanglesRequest: ResultPointsProviding {
@@ -523,6 +548,7 @@ extension VNDetectFaceRectanglesRequest: ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNFaceObservation] else { return [] }
         
         return results.map { result in
@@ -532,6 +558,7 @@ extension VNDetectFaceRectanglesRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectHumanRectanglesRequest: ResultPointsProviding {
@@ -540,6 +567,7 @@ extension VNDetectHumanRectanglesRequest: ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNDetectedObjectObservation] else { return [] }
         
         return results.map { result in
@@ -549,6 +577,7 @@ extension VNDetectHumanRectanglesRequest: ResultPointsProviding {
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNDetectTextRectanglesRequest: ResultPointsProviding {
@@ -557,6 +586,7 @@ extension VNDetectTextRectanglesRequest: ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNTextObservation] else { return [] }
         
         return results.flatMap { result -> [[CGPoint]] in
@@ -580,6 +610,8 @@ extension VNDetectTextRectanglesRequest: ResultPointsProviding {
         self.init()
         self.reportCharacterBoxes = reportCharacterBoxes
     }
+    
+    var generatedImages: [UIImage] { [] }
 }
 
 extension VNRecognizeAnimalsRequest: ResultPointsProviding {
@@ -588,15 +620,17 @@ extension VNRecognizeAnimalsRequest: ResultPointsProviding {
     func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
     
     func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNRecognizedObjectObservation] else { return [] }
         
         return results.map { result in
-            return result.boundingBox.rectangle(in: image).points
+            result.boundingBox.rectangle(in: image).points
                 .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
         }
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] {
+        // On iOS 15 and up this mapping is not needed anymore
         guard let results = results as? [VNRecognizedObjectObservation] else { return [] }
         
         return results.map { result in
@@ -612,10 +646,50 @@ extension VNRecognizeAnimalsRequest: ResultPointsProviding {
                                    text: name)
         }
     }
+    
+    var generatedImages: [UIImage] { [] }
+}
+
+extension VNGenerateAttentionBasedSaliencyImageRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
+        guard let results = results as? [VNSaliencyImageObservation] else { return [] }
+        
+        return results.compactMap { result in
+            result.salientObjects?.compactMap { $0.boundingBox
+                .rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            }
+            .flatMap { $0 }
+        }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    
+    var generatedImages: [UIImage] {
+        // On iOS 15 and up this mapping is not needed anymore
+        guard let result = results?.first as? VNSaliencyImageObservation,
+              let image = result.pixelBuffer.makeImage() else { return [] }
+
+        return [image]
+    }
 }
 
 extension VNRectangleObservation {
     var points: [CGPoint] {
         return [topLeft, topRight, bottomRight, bottomLeft]
+    }
+}
+
+extension CVPixelBuffer {
+    func makeImage() -> UIImage? {
+        let ciImage = CIImage(cvImageBuffer: self)
+        
+        guard let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) else { return nil }
+        return UIImage(cgImage: cgImage)
     }
 }
