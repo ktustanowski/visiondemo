@@ -215,9 +215,9 @@ extension UIImage {
         draw(at: CGPoint.zero)
 
 // Uncomment to draw gray background
-        let rect = CGRect(origin: .zero, size: size)
-        UIColor.background.setFill()
-        UIRectFill(rect)
+//        let rect = CGRect(origin: .zero, size: size)
+//        UIColor.background.setFill()
+//        UIRectFill(rect)
         
         let imageSize = size
         images?.forEach {
