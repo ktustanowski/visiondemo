@@ -11,7 +11,8 @@ import Vision
 extension ImageProcessingViewController {
     func process(_ image: UIImage) {
         guard let cgImage = image.cgImage else { return }
-        let attentionRequest = VNGenerateAttentionBasedSaliencyImageRequest()
+        let saliencyRequest = VNGenerateObjectnessBasedSaliencyImageRequest()
+//        let saliencyRequest = VNGenerateAttentionBasedSaliencyImageRequest()
         
         let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                    orientation: .init(image.imageOrientation),
@@ -20,24 +21,23 @@ extension ImageProcessingViewController {
         saveImageButton.isHidden = false
         visionQueue.async { [weak self] in
             do {
-                try requestHandler.perform([attentionRequest])
+                try requestHandler.perform([saliencyRequest])
             } catch {
                 print("Can't make the request due to \(error)")
             }
 
-            guard let results = attentionRequest.results else { return }
+            guard let results = saliencyRequest.results as? [VNSaliencyImageObservation] else { return }
             
             let rectangles = results
-                .compactMap { $0.salientObjects?.map { $0.boundingBox.rectangle(in: image) } }
-                .flatMap { $0 }
+                .flatMap { $0.salientObjects?.map { $0.boundingBox.rectangle(in: image) } ?? [] }
                 .map { CGRect(origin: $0.origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - $0.size.height),
                               size: $0.size) }
             
-            let heatmapImages = results.compactMap { $0.pixelBuffer.makeImage() }
+            let heatMap = results.first?.pixelBuffer.makeImage()
             
             DispatchQueue.main.async {
                 self?.imageView.image = image.draw(rectangles: rectangles,
-                                                   images: heatmapImages)
+                                                   image: heatMap)
             }
         }
     }
@@ -45,14 +45,14 @@ extension ImageProcessingViewController {
 
 extension UIImage {
     func draw(rectangles: [CGRect],
-              images: [UIImage],
+              image: UIImage?,
               strokeColor: UIColor = .primary,
               lineWidth: CGFloat = 2) -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { context in
             draw(in: CGRect(origin: .zero, size: size))
             
-            images.forEach { $0.draw(in: CGRect(origin: .zero, size: size), blendMode: .hue, alpha: 1.0) }
+            image?.draw(in: CGRect(origin: .zero, size: size), blendMode: .hue, alpha: 1.0)
             
             context.cgContext.setStrokeColor(strokeColor.cgColor)
             context.cgContext.setLineWidth(lineWidth)

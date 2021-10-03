@@ -22,6 +22,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var stopwatchImage: UIImageView!
     @IBOutlet private weak var animalsButton: UIButton!
     @IBOutlet private weak var attentionButton: UIButton!
+    @IBOutlet private weak var objectnessButton: UIButton!
     
     private var originalImage: UIImage?
     
@@ -103,6 +104,7 @@ private extension ImageProcessingViewController {
         let isTextRectanglesRequired = self.textButton.isSelected
         let isAnimalsRequired = self.animalsButton.isSelected
         let isAttentionRequired = self.attentionButton.isSelected
+        let isObjectnessRequired = self.objectnessButton.isSelected
         
         let requiredRequests = [isBodyPoseRequired,
                                 isHandPoseRequired,
@@ -111,7 +113,8 @@ private extension ImageProcessingViewController {
                                 isFaceBodyRectanglesRequired,
                                 isTextRectanglesRequired,
                                 isAnimalsRequired,
-                                isAttentionRequired]
+                                isAttentionRequired,
+                                isObjectnessRequired]
         let isProcessingRequired = requiredRequests.filter { $0 == true }.isEmpty == false
         
         guard isProcessingRequired else {
@@ -133,7 +136,8 @@ private extension ImageProcessingViewController {
                             isFaceBodyRectanglesRequired ? VNDetectHumanRectanglesRequest() : nil,
                             isTextRectanglesRequired ? VNDetectTextRectanglesRequest(reportCharacterBoxes: true) : nil,
                             isAnimalsRequired ? VNRecognizeAnimalsRequest() : nil,
-                            isAttentionRequired ? VNGenerateAttentionBasedSaliencyImageRequest() : nil].compactMap { $0 }
+                            isAttentionRequired ? VNGenerateAttentionBasedSaliencyImageRequest() : nil,
+                            isObjectnessRequired ? VNGenerateObjectnessBasedSaliencyImageRequest() : nil].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),
@@ -660,12 +664,41 @@ extension VNGenerateAttentionBasedSaliencyImageRequest: ResultPointsProviding {
         guard let results = results as? [VNSaliencyImageObservation] else { return [] }
         
         return results.compactMap { result in
-            result.salientObjects?.compactMap { $0.boundingBox
+            result.salientObjects?.compactMap {
+                $0.boundingBox
                 .rectangle(in: image).points
                 .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
             }
-            .flatMap { $0 }
-        }
+        }.flatMap { $0 }
+    }
+    
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
+    
+    var generatedImages: [UIImage] {
+        // On iOS 15 and up this mapping is not needed anymore
+        guard let result = results?.first as? VNSaliencyImageObservation,
+              let image = result.pixelBuffer.makeImage() else { return [] }
+
+        return [image]
+    }
+}
+
+extension VNGenerateObjectnessBasedSaliencyImageRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
+        guard let results = results as? [VNSaliencyImageObservation] else { return [] }
+        
+        return results.compactMap { result in
+            result.salientObjects?.compactMap {
+                $0.boundingBox
+                .rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+            }
+        }.flatMap { $0 }
     }
     
     func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] { [] }
