@@ -20,3 +20,9 @@ Photo by [bruce mars](https://unsplash.com/@brucemars?utm_source=unsplash&utm_me
 
 - #11 from 21.09.2021 - [Animals detection using the Vision framework](https://cornerbit.tech/animals-detection-using-the-vision-framework) using application version [0.4.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.4.0)
 <img src="Images/v040.PNG" alt="Codes detected" width="200"/>
+
+- #13 from 4.10.2021 - [Saliency detection using the Vision framework](https://cornerbit.tech/saliency-detection-using-the-vision-framework) using application version [0.5.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.5.0)
+
+<img src="Images/v050_attention.PNG" alt="Attention" width="200"/> <img src="Images/v050_objectness.PNG" alt="Objectness" width="200"/>
+
+Photo by [Jonah Pettrich](https://unsplash.com/@jonah_jpg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/karate?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
