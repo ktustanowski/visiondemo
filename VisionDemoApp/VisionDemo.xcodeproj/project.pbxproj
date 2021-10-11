@@ -38,6 +38,7 @@
 /* Begin PBXFileReference section */
 		7B3AC7FD26ECD90600E33384 /* ImageProcessingViewController+BarcodesDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+BarcodesDetection.swift"; sourceTree = "<group>"; };
 		7B3AC80026F2A61E00E33384 /* ImageProcessingViewController+AnimalsDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+AnimalsDetection.swift"; sourceTree = "<group>"; };
+		7B3CD726271488C100A1C462 /* TheVision.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TheVision.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7BD4CA33270668690040489D /* ImageProcessingViewController+AttentionDetection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+AttentionDetection.swift"; sourceTree = "<group>"; };
 		7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Constructing.swift"; sourceTree = "<group>"; };
 		7BE6107826D121AA00DDFAFD /* VisionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +85,7 @@
 		7BE6106F26D121AA00DDFAFD = {
 			isa = PBXGroup;
 			children = (
+				7B3CD726271488C100A1C462 /* TheVision.playground */,
 				7BE6107A26D121AA00DDFAFD /* VisionDemo */,
 				7BE6109126D121AC00DDFAFD /* VisionDemoTests */,
 				7BE6109C26D121AC00DDFAFD /* VisionDemoUITests */,
