@@ -40,7 +40,7 @@ extension UIImage {
     func draw(rectangles: [CGRect],
               image: UIImage?,
               strokeColor: UIColor = .primary,
-              lineWidth: CGFloat = 4) -> UIImage? {
+              lineWidth: CGFloat = 20) -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { context in
             draw(in: CGRect(origin: .zero, size: size))
