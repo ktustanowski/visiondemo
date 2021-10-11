@@ -57,15 +57,15 @@ extension UIImage {
 
 let imageProcessor = ImageProcessor()
 
-let cupcake = UIImage(named: "cupcake.jpg")!
+let cupcake = UIImage(named: "cupcake.jpg")! // Original photo by https://unsplash.com/@ibrahimboran
 let objectnessCupcake = imageProcessor.process(cupcake, isObjectness: true)
 let attentionCupcake = imageProcessor.process(cupcake, isObjectness: false)
 
-let car = UIImage(named: "car.jpg")!
-let objectnessCar = imageProcessor.process(car, isObjectness: true)
-let attentionCar = imageProcessor.process(car, isObjectness: false)
+let plane = UIImage(named: "plane.jpg")! // Original photo by https://unsplash.com/@nbb_photos
+let objectnessPlane = imageProcessor.process(plane, isObjectness: true)
+let attentionPlane = imageProcessor.process(plane, isObjectness: false)
 
-let lake = UIImage(named: "lake.jpg")!
+let lake = UIImage(named: "lake.jpg")! // Original photo by https://unsplash.com/@u2b_photos
 let objectnessLake = imageProcessor.process(lake, isObjectness: true)
 let attentionLake = imageProcessor.process(lake, isObjectness: false)
 //: [Next](@next)
