@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7BBD698927119F5800EAD6CB /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD698827119F5800EAD6CB /* UtilityExtensions.swift */; };
+		7BBD698B27119FD700EAD6CB /* VisionRequestsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD698A27119FD700EAD6CB /* VisionRequestsExtensions.swift */; };
 		7BD4CA32270663C00040489D /* ImageProcessingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE6107F26D121AA00DDFAFD /* ImageProcessingViewController.swift */; };
 		7BDB5EE226D6B7BB0077AF18 /* UIColor+Constructing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */; };
 		7BE6107C26D121AA00DDFAFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE6107B26D121AA00DDFAFD /* AppDelegate.swift */; };
@@ -38,8 +40,11 @@
 /* Begin PBXFileReference section */
 		7B3AC7FD26ECD90600E33384 /* ImageProcessingViewController+BarcodesDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+BarcodesDetection.swift"; sourceTree = "<group>"; };
 		7B3AC80026F2A61E00E33384 /* ImageProcessingViewController+AnimalsDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+AnimalsDetection.swift"; sourceTree = "<group>"; };
+		7BBD698827119F5800EAD6CB /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
+		7BBD698A27119FD700EAD6CB /* VisionRequestsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionRequestsExtensions.swift; sourceTree = "<group>"; };
 		7BD4CA33270668690040489D /* ImageProcessingViewController+AttentionDetection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+AttentionDetection.swift"; sourceTree = "<group>"; };
 		7BDB5EE126D6B7BB0077AF18 /* UIColor+Constructing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Constructing.swift"; sourceTree = "<group>"; };
+		7BE55E38270B812B002E13AA /* ImageProcessingViewController+ImageClassification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+ImageClassification.swift"; sourceTree = "<group>"; };
 		7BE6107826D121AA00DDFAFD /* VisionDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BE6107B26D121AA00DDFAFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BE6107D26D121AA00DDFAFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +120,9 @@
 				7B3AC7FD26ECD90600E33384 /* ImageProcessingViewController+BarcodesDetection.swift */,
 				7B3AC80026F2A61E00E33384 /* ImageProcessingViewController+AnimalsDetection.swift */,
 				7BD4CA33270668690040489D /* ImageProcessingViewController+AttentionDetection.swift */,
+				7BE55E38270B812B002E13AA /* ImageProcessingViewController+ImageClassification.swift */,
+				7BBD698827119F5800EAD6CB /* UtilityExtensions.swift */,
+				7BBD698A27119FD700EAD6CB /* VisionRequestsExtensions.swift */,
 			);
 			path = VisionDemo;
 			sourceTree = "<group>";
@@ -270,7 +278,9 @@
 				7BD4CA32270663C00040489D /* ImageProcessingViewController.swift in Sources */,
 				7BDB5EE226D6B7BB0077AF18 /* UIColor+Constructing.swift in Sources */,
 				7BE6107C26D121AA00DDFAFD /* AppDelegate.swift in Sources */,
+				7BBD698927119F5800EAD6CB /* UtilityExtensions.swift in Sources */,
 				7BE6107E26D121AA00DDFAFD /* SceneDelegate.swift in Sources */,
+				7BBD698B27119FD700EAD6CB /* VisionRequestsExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
