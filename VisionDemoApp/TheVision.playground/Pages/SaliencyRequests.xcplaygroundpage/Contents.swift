@@ -3,37 +3,31 @@
 import UIKit
 import Vision
 
-
-import Foundation
-
-struct ImageProcessor {
-    func process(_ image: UIImage, isObjectness: Bool) -> UIImage? {
-        guard let cgImage = image.cgImage else { return nil }
-        let saliencyRequest = isObjectness ? VNGenerateObjectnessBasedSaliencyImageRequest() : VNGenerateAttentionBasedSaliencyImageRequest()
-        
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage,
-                                                   orientation: .init(image.imageOrientation),
-                                                   options: [:])
-
-        // Remove separate quque to make results more streamlined
-            do {
-                try requestHandler.perform([saliencyRequest])
-            } catch {
-                print("Can't make the request due to \(error)")
-            }
-
-            guard let results = saliencyRequest.results as? [VNSaliencyImageObservation] else { return nil }
-            
-            let rectangles = results
-                .flatMap { $0.salientObjects?.map { $0.boundingBox.rectangle(in: image) } ?? [] }
-                .map { CGRect(origin: $0.origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - $0.size.height),
-                              size: $0.size) }
-            
-            let heatMap = results.first?.pixelBuffer.makeImage()
-            
-        return image.draw(rectangles: rectangles,
-                          image: heatMap)
+func process(_ image: UIImage, isObjectness: Bool) -> UIImage? {
+    guard let cgImage = image.cgImage else { return nil }
+    let saliencyRequest = isObjectness ? VNGenerateObjectnessBasedSaliencyImageRequest() : VNGenerateAttentionBasedSaliencyImageRequest()
+    
+    let requestHandler = VNImageRequestHandler(cgImage: cgImage,
+                                               orientation: .init(image.imageOrientation),
+                                               options: [:])
+    
+    do {
+        try requestHandler.perform([saliencyRequest])
+    } catch {
+        print("Can't make the request due to \(error)")
     }
+    
+    guard let results = saliencyRequest.results as? [VNSaliencyImageObservation] else { return nil }
+    
+    let rectangles = results
+        .flatMap { $0.salientObjects?.map { $0.boundingBox.rectangle(in: image) } ?? [] }
+        .map { CGRect(origin: $0.origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - $0.size.height),
+                      size: $0.size) }
+    
+    let heatMap = results.first?.pixelBuffer.makeImage()
+    
+    return image.draw(rectangles: rectangles,
+                      image: heatMap)
 }
 
 extension UIImage {
@@ -55,17 +49,15 @@ extension UIImage {
     }
 }
 
-let imageProcessor = ImageProcessor()
-
 let cupcake = UIImage(named: "cupcake.jpg")! // Original photo by https://unsplash.com/@ibrahimboran
-let objectnessCupcake = imageProcessor.process(cupcake, isObjectness: true)
-let attentionCupcake = imageProcessor.process(cupcake, isObjectness: false)
+process(cupcake, isObjectness: true)
+process(cupcake, isObjectness: false)
 
 let plane = UIImage(named: "plane.jpg")! // Original photo by https://unsplash.com/@nbb_photos
-let objectnessPlane = imageProcessor.process(plane, isObjectness: true)
-let attentionPlane = imageProcessor.process(plane, isObjectness: false)
+process(plane, isObjectness: true)
+process(plane, isObjectness: false)
 
 let lake = UIImage(named: "lake.jpg")! // Original photo by https://unsplash.com/@u2b_photos
-let objectnessLake = imageProcessor.process(lake, isObjectness: true)
-let attentionLake = imageProcessor.process(lake, isObjectness: false)
+process(lake, isObjectness: true)
+process(lake, isObjectness: false)
 //: [Next](@next)
