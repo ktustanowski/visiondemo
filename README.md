@@ -37,4 +37,5 @@ Photo by [Robert Lukeman](https://unsplash.com/@robertlukeman?utm_source=unsplas
 Starting from 0.7.0 the project contains playground with example Vision requests for you to try out.  
 
 <img src="Images/v070.png" alt="Playgrounds" width="200"/>
+
 Photo by [Lacie Slezak](https://unsplash.com/@nbb_photos) on [Unsplash](https://unsplash.com)
