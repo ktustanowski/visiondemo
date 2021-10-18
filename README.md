@@ -36,4 +36,4 @@ Photo by [Robert Lukeman](https://unsplash.com/@robertlukeman?utm_source=unsplas
 - [Working with the Vision framework in the playgrounds](https://cornerbit.tech/working-with-the-vision-framework-in-the-playgrounds) using application version [0.7.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.7.0)
 Starting from 0.7.0 the project contains playground with example Vision requests for you to try out.  
 
-<img src="Images/v070.PNG" alt="Attention" width="200"/>
+<img src="Images/v070.png" alt="Playgrounds" width="200"/>
