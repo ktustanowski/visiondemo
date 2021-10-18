@@ -33,10 +33,6 @@ Photo by [Jonah Pettrich](https://unsplash.com/@jonah_jpg?utm_source=unsplash&ut
 
 Photo by [Robert Lukeman](https://unsplash.com/@robertlukeman?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/karate?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
-- [Image classification using the Vision framework](https://cornerbit.tech/image-classification-using-the-vision-framework) using application version [0.6.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.6.0)
-
-<img src="Images/v060.PNG" alt="Attention" width="200"/>
-
 - [Working with the Vision framework in the playgrounds](https://cornerbit.tech/working-with-the-vision-framework-in-the-playgrounds) using application version [0.7.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.7.0)
 Starting from 0.7.0 the project contains playground with example Vision requests for you to try out.  
 
