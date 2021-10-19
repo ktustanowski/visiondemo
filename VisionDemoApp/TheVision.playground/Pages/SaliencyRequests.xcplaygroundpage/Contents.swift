@@ -1,4 +1,5 @@
 //: [Previous](@previous)
+var readThisFirst = "⚠️ Playgrounds are  dependent on the project so you need to build the project first before using them."
 
 import UIKit
 import Vision
