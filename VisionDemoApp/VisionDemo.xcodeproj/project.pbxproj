@@ -38,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B01296C2753D343007B1BF9 /* CreateML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CreateML.framework; path = System/Library/Frameworks/CreateML.framework; sourceTree = SDKROOT; };
 		7B30D8EE2737F2F9009FFF1B /* TheSoundAnalysis.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = TheSoundAnalysis.playground; sourceTree = "<group>"; };
 		7B3AC7FD26ECD90600E33384 /* ImageProcessingViewController+BarcodesDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+BarcodesDetection.swift"; sourceTree = "<group>"; };
 		7B3AC80026F2A61E00E33384 /* ImageProcessingViewController+AnimalsDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageProcessingViewController+AnimalsDetection.swift"; sourceTree = "<group>"; };
@@ -88,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B01296B2753D343007B1BF9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B01296C2753D343007B1BF9 /* CreateML.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7BE6106F26D121AA00DDFAFD = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +106,7 @@
 				7BE6109126D121AC00DDFAFD /* VisionDemoTests */,
 				7BE6109C26D121AC00DDFAFD /* VisionDemoUITests */,
 				7BE6107926D121AA00DDFAFD /* Products */,
+				7B01296B2753D343007B1BF9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
