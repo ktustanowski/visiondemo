@@ -5,6 +5,5 @@
         <page name='SaliencyRequests'/>
         <page name='VNClassifyImageRequest'/>
         <page name='VNRecognizeAnimalsRequest'/>
-        <page name='VNGeneratePersonSegmentationRequest'/>
     </pages>
 </playground>

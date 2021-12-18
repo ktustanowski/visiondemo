@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -80,7 +80,7 @@
                                 <rect key="frame" x="20" y="88" width="372" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qj-oD-eSc">
-                                        <rect key="frame" x="0.0" y="0.0" width="34" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="tJ1-6o-eZi"/>
                                         </constraints>
@@ -93,7 +93,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="upq-Rw-xqX">
-                                        <rect key="frame" x="42" y="0.0" width="34.5" height="44"/>
+                                        <rect key="frame" x="38" y="0.0" width="30" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="cWR-o4-e7f"/>
                                         </constraints>
@@ -106,7 +106,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hn4-Oi-q7F">
-                                        <rect key="frame" x="84.5" y="0.0" width="34" height="44"/>
+                                        <rect key="frame" x="76" y="0.0" width="30" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="gp7-rm-mZb"/>
                                         </constraints>
@@ -119,7 +119,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hB-Yh-Miy">
-                                        <rect key="frame" x="126.5" y="0.0" width="34.5" height="44"/>
+                                        <rect key="frame" x="114" y="0.0" width="30" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="62D-Jo-HPL"/>
@@ -135,7 +135,7 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBu-jX-bEF">
-                                        <rect key="frame" x="165" y="0.0" width="0.0" height="44"/>
+                                        <rect key="frame" x="148" y="0.0" width="0.0" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="6W1-83-NSJ"/>
@@ -151,7 +151,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLS-Tc-aMH">
-                                        <rect key="frame" x="169" y="0.0" width="34" height="44"/>
+                                        <rect key="frame" x="152" y="0.0" width="30" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="i2w-6Q-ohr"/>
                                         </constraints>
@@ -164,7 +164,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbz-CB-JCQ">
-                                        <rect key="frame" x="211" y="0.0" width="34.5" height="44"/>
+                                        <rect key="frame" x="190" y="0.0" width="30" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Dbz-u5-SX4"/>
@@ -178,7 +178,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Olr-HO-Rxl">
-                                        <rect key="frame" x="253.5" y="0.0" width="34" height="44"/>
+                                        <rect key="frame" x="228" y="0.0" width="30" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="2oS-xA-gfa"/>
@@ -192,7 +192,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RJt-9u-X28">
-                                        <rect key="frame" x="295.5" y="0.0" width="34.5" height="44"/>
+                                        <rect key="frame" x="266" y="0.0" width="30" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="lns-SU-Fjj"/>
@@ -206,7 +206,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-by-67z">
-                                        <rect key="frame" x="338" y="0.0" width="34" height="44"/>
+                                        <rect key="frame" x="304" y="0.0" width="30" height="44"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="kA7-M3-eiD"/>
@@ -217,6 +217,20 @@
                                         <state key="selected" backgroundImage="rectangle" catalog="system"/>
                                         <connections>
                                             <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2Dw-n0-FCV"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFH-we-GDo">
+                                        <rect key="frame" x="342" y="0.0" width="30" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="nNG-Uy-DjE"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="tintColor" name="Primary"/>
+                                        <state key="normal" image="person.fill" catalog="system"/>
+                                        <state key="selected" backgroundImage="rectangle" catalog="system"/>
+                                        <connections>
+                                            <action selector="didTapSelectRequestButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y3t-HS-4F0"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -264,6 +278,7 @@
                         <outlet property="descriptionLabel" destination="ViN-Ib-EZ2" id="YOS-EQ-eP1"/>
                         <outlet property="durationLabel" destination="xcO-N2-BCz" id="Bgt-NK-fJq"/>
                         <outlet property="faceBodyRectangles" destination="NBu-jX-bEF" id="4P3-Zv-BBa"/>
+                        <outlet property="faceCaptureQualityButton" destination="WFH-we-GDo" id="H5G-mH-oFL"/>
                         <outlet property="faceLandmarksButton" destination="Hn4-Oi-q7F" id="tuL-lL-wRc"/>
                         <outlet property="handPoseButton" destination="upq-Rw-xqX" id="Y05-aK-Oa1"/>
                         <outlet property="imageView" destination="G3z-1V-rra" id="zpE-rG-zqQ"/>
@@ -284,6 +299,7 @@
         <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
         <image name="person.crop.square" catalog="system" width="128" height="114"/>
         <image name="person.crop.square.fill" catalog="system" width="128" height="114"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="rectangle" catalog="system" width="128" height="93"/>
         <image name="stopwatch" catalog="system" width="121" height="128"/>

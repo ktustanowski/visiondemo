@@ -2,7 +2,7 @@
 //  UtilityExtensions.swift
 //  VisionDemo
 //
-//  Created by Semerkchet on 09/10/2021.
+//  Created by Kamil Tustanowski on 09/10/2021.
 //
 
 import Vision

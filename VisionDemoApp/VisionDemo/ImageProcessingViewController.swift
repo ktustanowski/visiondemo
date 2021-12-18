@@ -24,6 +24,7 @@ final class ImageProcessingViewController: UIViewController {
     @IBOutlet private weak var attentionButton: UIButton!
     @IBOutlet private weak var objectnessButton: UIButton!
     @IBOutlet private weak var classifyImageButton: UIButton!
+    @IBOutlet private weak var faceCaptureQualityButton: UIButton!
     
     @IBOutlet private weak var descriptionLabel: UILabel!
     
@@ -127,6 +128,7 @@ private extension ImageProcessingViewController {
         let isAttentionRequired = self.attentionButton.isSelected
         let isObjectnessRequired = self.objectnessButton.isSelected
         let isClassifyImageRequired = self.classifyImageButton.isSelected
+        let isFaceCaptureQualityRequired = self.faceCaptureQualityButton.isSelected
         
         let requiredRequests = [isBodyPoseRequired,
                                 isHandPoseRequired,
@@ -137,7 +139,8 @@ private extension ImageProcessingViewController {
                                 isAnimalsRequired,
                                 isAttentionRequired,
                                 isObjectnessRequired,
-                                isClassifyImageRequired]
+                                isClassifyImageRequired,
+                                isFaceCaptureQualityRequired]
         let isProcessingRequired = requiredRequests.filter { $0 == true }.isEmpty == false
         
         guard isProcessingRequired else {
@@ -161,7 +164,8 @@ private extension ImageProcessingViewController {
                             isAnimalsRequired ? VNRecognizeAnimalsRequest() : nil,
                             isAttentionRequired ? VNGenerateAttentionBasedSaliencyImageRequest() : nil,
                             isObjectnessRequired ? VNGenerateObjectnessBasedSaliencyImageRequest() : nil,
-                            isClassifyImageRequired ? VNClassifyImageRequest() : nil].compactMap { $0 }
+                            isClassifyImageRequired ? VNClassifyImageRequest() : nil,
+                            isFaceCaptureQualityRequired ? VNDetectFaceCaptureQualityRequest() : nil].compactMap { $0 }
 
             let requestHandler = VNImageRequestHandler(cgImage: cgImage,
                                                        orientation: .init(image.imageOrientation),

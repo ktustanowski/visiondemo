@@ -2,7 +2,7 @@
 //  VisionRequestsExtensions.swift
 //  VisionDemo
 //
-//  Created by Semerkchet on 09/10/2021.
+//  Created by Kamil Tustanowski on 09/10/2021.
 //
 
 import Foundation
@@ -358,3 +358,35 @@ extension VNClassifyImageRequest: ResultPointsProviding {
     }
 }
 
+extension VNDetectFaceCaptureQualityRequest: ResultPointsProviding {
+    func pointsProjected(onto image: UIImage) -> [CGPoint] { [] }
+    func openPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] { [] }
+    func closedPointGroups(projectedOnto image: UIImage) -> [[CGPoint]] {
+        // On iOS 15 and up this mapping is not needed anymore
+        guard let results = results else { return [] }
+        
+        return results.map { result in
+            result.boundingBox.rectangle(in: image).points
+                .map { $0.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height) }
+        }
+    }
+    
+    var generatedImages: [UIImage] { [] }
+
+    func displayableTextPoints(projectedOnto image: UIImage) -> [DisplayableText] {
+        guard let results = results else { return [] }
+        
+        let boxesAndNames = results
+            .map { (box: $0.boundingBox.rectangle(in: image),
+                    name: "\($0.faceCaptureQuality ?? 0.0)") }
+            
+        let rectangles = boxesAndNames.map { $0.box }
+            .map { CGRect(origin: $0.origin.translateFromCoreImageToUIKitCoordinateSpace(using: image.size.height - $0.size.height),
+                          size: $0.size) }
+
+        return zip(rectangles,
+                   boxesAndNames.map { $0.name })
+            .map { DisplayableText(frame: $0.0,
+                                   text: $0.1) }
+    }
+}
