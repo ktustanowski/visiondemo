@@ -43,5 +43,5 @@ Photo by [Lacie Slezak](https://unsplash.com/@nbb_photos) on [Unsplash](https://
 - [Detecting face capture quality using the Vision framework](https://cornerbit.tech/detecting-face-capture-quality-using-the-vision-framework/) using application version [0.8.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.8.0)
 
 <img src="Images/v080.PNG" alt="Playgrounds" width="200"/>
-s
+
 Photo by [x )](https://unsplash.com/@speckfechta) on [Unsplash](https://unsplash.com)
