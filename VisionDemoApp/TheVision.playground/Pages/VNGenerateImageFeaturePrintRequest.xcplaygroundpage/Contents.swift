@@ -23,17 +23,17 @@ func process(_ image: UIImage) -> VNFeaturePrintObservation? {
     return result
 }
 
-let baloon1 = UIImage(named: "baloon_1.jpg")!
-let baloon1FeaturePrint = process(baloon1)!
+let balloon1 = UIImage(named: "balloon_1.jpg")!
+let balloon1FeaturePrint = process(balloon1)!
 
-let baloon2 = UIImage(named: "baloon_2.jpg")!
-let baloon2FeaturePrint = process(baloon2)!
+let balloon2 = UIImage(named: "balloon_2.jpg")!
+let balloon2FeaturePrint = process(balloon2)!
 
-let baloon3 = UIImage(named: "baloon_3.jpg")!
-let baloon3FeaturePrint = process(baloon3)!
+let balloon3 = UIImage(named: "balloon_3.jpg")!
+let balloon3FeaturePrint = process(balloon3)!
 
-let baloon4 = UIImage(named: "baloon_4.jpg")!
-let baloon4FeaturePrint = process(baloon4)!
+let balloon4 = UIImage(named: "balloon_4.jpg")!
+let balloon4FeaturePrint = process(balloon4)!
 
 let heart = UIImage(named: "heart.jpg")!
 let heartFeaturePrint = process(heart)!
@@ -41,18 +41,18 @@ let heartFeaturePrint = process(heart)!
 let plane = UIImage(named: "plane.jpg")! // Original photo by https://unsplash.com/@nbb_photos
 let planeFeaturePrint = process(plane)!
 
-var baloon1ToBallon2Distance: Float = .infinity
-var baloon1ToBallon3Distance: Float = .infinity
-var baloon1ToBallon4Distance: Float = .infinity
-var baloon1ToHeartDistance: Float = .infinity
-var baloon1ToPlaneDistance: Float = .infinity
+var balloon1ToBallon2Distance: Float = .infinity
+var balloon1ToBallon3Distance: Float = .infinity
+var balloon1ToBallon4Distance: Float = .infinity
+var balloon1ToHeartDistance: Float = .infinity
+var balloon1ToPlaneDistance: Float = .infinity
 
 do {
-    try baloon1FeaturePrint.computeDistance(&baloon1ToBallon2Distance, to: baloon2FeaturePrint)
-    try baloon1FeaturePrint.computeDistance(&baloon1ToBallon3Distance, to: baloon3FeaturePrint)
-    try baloon1FeaturePrint.computeDistance(&baloon1ToBallon4Distance, to: baloon4FeaturePrint)
-    try baloon1FeaturePrint.computeDistance(&baloon1ToHeartDistance, to: heartFeaturePrint)
-    try baloon1FeaturePrint.computeDistance(&baloon1ToPlaneDistance, to: planeFeaturePrint)
+    try balloon1FeaturePrint.computeDistance(&balloon1ToBallon2Distance, to: balloon2FeaturePrint)
+    try balloon1FeaturePrint.computeDistance(&balloon1ToBallon3Distance, to: balloon3FeaturePrint)
+    try balloon1FeaturePrint.computeDistance(&balloon1ToBallon4Distance, to: balloon4FeaturePrint)
+    try balloon1FeaturePrint.computeDistance(&balloon1ToHeartDistance, to: heartFeaturePrint)
+    try balloon1FeaturePrint.computeDistance(&balloon1ToPlaneDistance, to: planeFeaturePrint)
 } catch {
     print("Couldn't compute the distance")
 }
@@ -60,16 +60,16 @@ do {
 // Tap on rectangular icons on the right to see values and images.
 // If two images won't fit make sure you make the component larger.
 
-[baloon1, baloon2]
-baloon1ToBallon2Distance
-[baloon1, baloon3]
-baloon1ToBallon3Distance
-[baloon1, baloon4]
-baloon1ToBallon4Distance
-[baloon1, heart]
-baloon1ToHeartDistance
+[balloon1, balloon2]
+balloon1ToBallon2Distance
+[balloon1, balloon3]
+balloon1ToBallon3Distance
+[balloon1, balloon4]
+balloon1ToBallon4Distance
+[balloon1, heart]
+balloon1ToHeartDistance
 
-[baloon1, plane]
-baloon1ToPlaneDistance
+[balloon1, plane]
+balloon1ToPlaneDistance
 
 //: [Next](@next)
