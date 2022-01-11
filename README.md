@@ -45,3 +45,7 @@ Photo by [Lacie Slezak](https://unsplash.com/@nbb_photos) on [Unsplash](https://
 <img src="Images/v080.PNG" alt="Playgrounds" width="200"/>
 
 Photo by [x )](https://unsplash.com/@speckfechta) on [Unsplash](https://unsplash.com)
+
+- [Comparing images using the Vision framework](https://cornerbit.tech/comparing-images-using-the-vision-framework-2/) using application version [0.9.0](https://github.com/ktustanowski/visiondemo/releases/tag/v0.9.0)
+
+<img src="Images/v090.PNG" alt="Playgrounds" width="200"/>
